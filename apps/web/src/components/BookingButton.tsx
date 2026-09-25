@@ -24,7 +24,7 @@ export function BookButton({ sessionId, full }: { sessionId: string; full: boole
           {pending ? "Booking…" : full ? "Join waitlist" : "Book"}
         </button>
       </form>
-      {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+      {state.error && <p className="text-xs text-red-400">{state.error}</p>}
     </div>
   );
 }
@@ -41,12 +41,12 @@ export function CancelButton({ bookingId }: { bookingId: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium disabled:opacity-50"
+          className="rounded-md border border-neutral-700 px-3 py-1.5 text-sm font-medium disabled:opacity-50"
         >
           {pending ? "Cancelling…" : "Cancel"}
         </button>
       </form>
-      {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+      {state.error && <p className="text-xs text-red-400">{state.error}</p>}
     </div>
   );
 }

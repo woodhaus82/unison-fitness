@@ -51,9 +51,9 @@ export default async function RosterPage({
           <h1 className="text-2xl font-semibold">
             {classType?.name ?? "Class"} · {format(parseISO(session.session_date), "EEEE d MMMM")}
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-400">
             {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} ·{" "}
-            <span className={bookedCount >= session.capacity ? "font-medium text-amber-600" : undefined}>
+            <span className={bookedCount >= session.capacity ? "font-medium text-amber-400" : undefined}>
               {bookedCount}/{session.capacity} booked
             </span>
             {waitlistCount > 0 ? ` · ${waitlistCount} waitlisted` : ""}
@@ -71,11 +71,11 @@ export default async function RosterPage({
           return (
             <li
               key={b.id}
-              className="flex items-center justify-between rounded-lg border border-neutral-200 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3"
             >
               <div>
                 <p className="font-medium">{member?.full_name ?? member?.email ?? "Member"}</p>
-                <p className="text-sm text-neutral-500">
+                <p className="text-sm text-neutral-400">
                   {STATUS_LABEL[b.status] ?? b.status}
                   {b.status === "waitlisted" && b.waitlist_position ? ` (#${b.waitlist_position})` : ""}
                 </p>
@@ -84,7 +84,7 @@ export default async function RosterPage({
             </li>
           );
         })}
-        {(bookings ?? []).length === 0 && <p className="text-neutral-500">No bookings for this session.</p>}
+        {(bookings ?? []).length === 0 && <p className="text-neutral-400">No bookings for this session.</p>}
       </ul>
     </div>
   );

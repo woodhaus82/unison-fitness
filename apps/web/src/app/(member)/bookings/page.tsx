@@ -44,14 +44,14 @@ export default async function BookingsPage() {
           return (
             <li
               key={b.id}
-              className="flex items-center justify-between rounded-lg border border-neutral-200 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3"
             >
               <div>
                 <p className="font-medium">
                   {session ? format(parseISO(session.session_date), "EEE d MMM") : "—"}
                   {session ? ` · ${session.start_time.slice(0, 5)}` : ""} · {classType?.name ?? "Class"}
                 </p>
-                <p className="text-sm text-neutral-500">
+                <p className="text-sm text-neutral-400">
                   {STATUS_LABEL[b.status] ?? b.status}
                   {b.status === "waitlisted" && b.waitlist_position ? ` (#${b.waitlist_position})` : ""}
                 </p>
@@ -62,7 +62,7 @@ export default async function BookingsPage() {
         })}
 
         {(bookings ?? []).length === 0 && (
-          <p className="text-neutral-500">No bookings yet — head to the schedule to book a class.</p>
+          <p className="text-neutral-400">No bookings yet — head to the schedule to book a class.</p>
         )}
       </ul>
     </main>

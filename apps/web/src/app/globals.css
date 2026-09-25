@@ -1,11 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Brand: extracted from unison.fitness (logo accent + site CSS). */
+  /* Dark theme — matches unison.fitness's own dark sections
+     (rgb(22,22,22)/rgb(51,51,51) in their site CSS), and lets the teal
+     brand accent actually pop the way it does on their site. */
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
   --brand: #20b2aa;
   --brand-hover: #27d0c7;
+  /* Tells the browser to render native controls (checkboxes, date
+     pickers, scrollbars, select dropdowns) with their dark variant
+     instead of defaulting to light-on-white. */
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -26,4 +32,23 @@ body {
 h1, h2, h3 {
   font-family: var(--font-heading), Arial, sans-serif;
   letter-spacing: 0.01em;
+}
+
+/* Native form controls don't inherit the dark page background on their
+   own — without this every input/select/textarea in the app would render
+   as a jarring white box. Tailwind utility classes on specific elements
+   still win (class specificity beats this element selector), so this is
+   just the default. */
+input, select, textarea {
+  background-color: #171717;
+  color: var(--foreground);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #737373;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--brand);
+  outline-offset: 1px;
 }

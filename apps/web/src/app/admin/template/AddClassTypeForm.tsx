@@ -25,7 +25,7 @@ export function AddClassTypeForm() {
           name="name"
           required
           placeholder="e.g. Kids Class"
-          className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+          className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
         />
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium">
@@ -35,12 +35,12 @@ export function AddClassTypeForm() {
           name="default_capacity"
           min={1}
           defaultValue={12}
-          className="w-28 rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+          className="w-28 rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
         />
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium">
         Colour (optional)
-        <input type="color" name="color" defaultValue="#525252" className="h-9 w-14 rounded-md border border-neutral-300" />
+        <input type="color" name="color" defaultValue="#525252" className="h-9 w-14 rounded-md border border-neutral-700" />
       </label>
       <button
         type="submit"
@@ -49,7 +49,7 @@ export function AddClassTypeForm() {
       >
         {pending ? "Adding…" : "Add class type"}
       </button>
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="text-sm text-red-400">{state.error}</p>}
     </form>
   );
 }

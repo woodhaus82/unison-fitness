@@ -41,13 +41,13 @@ export function BenchmarkRow({
   if (deleted) return null;
 
   return (
-    <li className="flex items-center gap-3 rounded-lg border border-neutral-200 px-4 py-2">
+    <li className="flex items-center gap-3 rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-2">
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         onBlur={save}
-        className="min-w-0 flex-1 rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+        className="min-w-0 flex-1 rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
       />
       <input
         type="text"
@@ -55,18 +55,18 @@ export function BenchmarkRow({
         onChange={(e) => setDescription(e.target.value)}
         onBlur={save}
         placeholder="Description"
-        className="min-w-0 flex-[2] rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+        className="min-w-0 flex-[2] rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
       />
-      <span className="shrink-0 text-xs text-neutral-500">{SCORE_TYPE_LABEL[scoreType] ?? scoreType}</span>
+      <span className="shrink-0 text-xs text-neutral-400">{SCORE_TYPE_LABEL[scoreType] ?? scoreType}</span>
       <button
         type="button"
         disabled={pending}
         onClick={handleDelete}
-        className="shrink-0 text-xs text-red-600 underline disabled:opacity-50"
+        className="shrink-0 text-xs text-red-400 underline disabled:opacity-50"
       >
         Delete
       </button>
-      {error && <span className="shrink-0 text-xs text-red-600">{error}</span>}
+      {error && <span className="shrink-0 text-xs text-red-400">{error}</span>}
     </li>
   );
 }

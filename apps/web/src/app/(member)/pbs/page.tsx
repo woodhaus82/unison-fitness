@@ -27,10 +27,10 @@ export default async function PbsPage() {
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
       <h1 className="text-2xl font-semibold">PBs</h1>
-      <p className="mt-1 text-sm text-neutral-500">Log your scores for benchmark WODs and lifts, and track them over time.</p>
+      <p className="mt-1 text-sm text-neutral-400">Log your scores for benchmark WODs and lifts, and track them over time.</p>
 
       <section className="mt-8">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Benchmark WODs</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">Benchmark WODs</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {wods.map((b) => (
             <BenchmarkEntry
@@ -42,12 +42,12 @@ export default async function PbsPage() {
               entries={entriesByBenchmark.get(b.id) ?? []}
             />
           ))}
-          {wods.length === 0 && <p className="text-neutral-500">None yet.</p>}
+          {wods.length === 0 && <p className="text-neutral-400">None yet.</p>}
         </ul>
       </section>
 
       <section className="mt-8">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Lifts</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">Lifts</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {lifts.map((b) => (
             <BenchmarkEntry
@@ -59,7 +59,7 @@ export default async function PbsPage() {
               entries={entriesByBenchmark.get(b.id) ?? []}
             />
           ))}
-          {lifts.length === 0 && <p className="text-neutral-500">None yet.</p>}
+          {lifts.length === 0 && <p className="text-neutral-400">None yet.</p>}
         </ul>
       </section>
     </main>

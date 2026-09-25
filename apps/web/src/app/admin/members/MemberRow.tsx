@@ -54,21 +54,21 @@ export function MemberRow({
   if (deleted) return null;
 
   return (
-    <li className="flex items-center justify-between gap-3 rounded-lg border border-neutral-200 px-4 py-3">
+    <li className="flex items-center justify-between gap-3 rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3">
       <div>
         <p className="font-medium">
           {fullName ?? email}
-          {isSelf && <span className="ml-2 text-xs font-normal text-neutral-400">(you)</span>}
+          {isSelf && <span className="ml-2 text-xs font-normal text-neutral-600">(you)</span>}
         </p>
-        <p className="text-sm text-neutral-500">{email}</p>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        <p className="text-sm text-neutral-400">{email}</p>
+        {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
       <div className="flex items-center gap-2">
         <select
           value={currentRole}
           disabled={pending || isSelf}
           onChange={(e) => handleRoleChange(e.target.value as UserRole)}
-          className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm disabled:opacity-50"
+          className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm disabled:opacity-50"
         >
           <option value="member">Member</option>
           <option value="coach">Coach</option>
@@ -78,7 +78,7 @@ export function MemberRow({
           type="button"
           disabled={pending || isSelf}
           onClick={handleDelete}
-          className="rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-700 disabled:opacity-50"
+          className="rounded-md border border-red-900 px-3 py-1.5 text-sm font-medium text-red-400 disabled:opacity-50"
         >
           Delete
         </button>

@@ -27,7 +27,7 @@ export function TimeSlotRow({
   }
 
   return (
-    <tr className="border-t border-neutral-100">
+    <tr className="border-t border-neutral-800">
       <td className="py-1.5 pr-3">
         <div className="flex items-center gap-1">
           <input
@@ -35,18 +35,18 @@ export function TimeSlotRow({
             value={start}
             onChange={(e) => setStart(e.target.value)}
             onBlur={() => save(start, end)}
-            className="w-24 rounded border border-neutral-300 px-1 py-0.5 text-sm"
+            className="w-24 rounded border border-neutral-700 px-1 py-0.5 text-sm"
           />
-          <span className="text-neutral-400">–</span>
+          <span className="text-neutral-600">–</span>
           <input
             type="time"
             value={end}
             onChange={(e) => setEnd(e.target.value)}
             onBlur={() => save(start, end)}
-            className="w-24 rounded border border-neutral-300 px-1 py-0.5 text-sm"
+            className="w-24 rounded border border-neutral-700 px-1 py-0.5 text-sm"
           />
         </div>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && <p className="text-xs text-red-400">{error}</p>}
       </td>
       {children}
       <td className="py-1.5 pl-3 text-right">
@@ -64,7 +64,7 @@ export function TimeSlotRow({
               });
             }
           }}
-          className="text-xs text-red-600 underline disabled:opacity-50"
+          className="text-xs text-red-400 underline disabled:opacity-50"
         >
           Delete
         </button>

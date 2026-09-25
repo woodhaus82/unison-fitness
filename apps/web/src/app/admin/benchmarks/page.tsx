@@ -17,7 +17,7 @@ export default async function BenchmarksPage() {
     <div className="flex flex-col gap-10">
       <section>
         <h1 className="text-2xl font-semibold">Benchmark WODs &amp; lifts</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-400">
           The list members log their PBs against, on the &quot;PBs&quot; page. Click a name or description to edit
           it.
         </p>
@@ -36,7 +36,7 @@ export default async function BenchmarksPage() {
           {wods.map((b) => (
             <BenchmarkRow key={b.id} id={b.id} initialName={b.name} initialDescription={b.description} scoreType={b.score_type} />
           ))}
-          {wods.length === 0 && <p className="text-sm text-neutral-500">None yet.</p>}
+          {wods.length === 0 && <p className="text-sm text-neutral-400">None yet.</p>}
         </ul>
       </section>
 
@@ -46,7 +46,7 @@ export default async function BenchmarksPage() {
           {lifts.map((b) => (
             <BenchmarkRow key={b.id} id={b.id} initialName={b.name} initialDescription={b.description} scoreType={b.score_type} />
           ))}
-          {lifts.length === 0 && <p className="text-sm text-neutral-500">None yet.</p>}
+          {lifts.length === 0 && <p className="text-sm text-neutral-400">None yet.</p>}
         </ul>
       </section>
     </div>

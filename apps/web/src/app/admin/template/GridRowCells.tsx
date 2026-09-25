@@ -75,7 +75,7 @@ export function GridRowCells({
           value={coachId ?? ""}
           disabled={pending || !selected}
           onChange={(e) => chooseCoach(e.target.value || null)}
-          className="w-full rounded border border-neutral-300 px-1 py-0.5 text-sm disabled:opacity-50"
+          className="w-full rounded border border-neutral-700 px-1 py-0.5 text-sm disabled:opacity-50"
         >
           <option value="">—</option>
           {coaches.map((c) => (

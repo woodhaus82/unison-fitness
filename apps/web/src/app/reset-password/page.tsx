@@ -14,7 +14,7 @@ export default async function ResetPasswordPage({
       <h1 className="text-2xl font-semibold">Set a new password</h1>
 
       {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="mt-4 rounded-md bg-red-950 px-3 py-2 text-sm text-red-400">{error}</p>
       )}
 
       <form action={updatePassword} className="mt-6 flex flex-col gap-4">
@@ -26,7 +26,7 @@ export default async function ResetPasswordPage({
             required
             minLength={8}
             autoComplete="new-password"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-base"
+            className="rounded-md border border-neutral-700 px-3 py-2 text-base"
           />
         </label>
         <button

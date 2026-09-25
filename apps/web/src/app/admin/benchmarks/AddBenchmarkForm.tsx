@@ -20,18 +20,18 @@ export function AddBenchmarkForm() {
     <form ref={formRef} action={formAction} className="flex flex-wrap items-end gap-3">
       <label className="flex flex-col gap-1 text-sm font-medium">
         Name
-        <input type="text" name="name" required placeholder="e.g. Fran" className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm" />
+        <input type="text" name="name" required placeholder="e.g. Fran" className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm" />
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium">
         Category
-        <select name="category" className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm">
+        <select name="category" className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm">
           <option value="wod">WOD</option>
           <option value="lift">Lift</option>
         </select>
       </label>
       <label className="flex flex-col gap-1 text-sm font-medium">
         Scored by
-        <select name="score_type" className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm">
+        <select name="score_type" className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm">
           <option value="time">Time (faster is better)</option>
           <option value="reps">Reps (more is better)</option>
           <option value="weight">Weight (more is better)</option>
@@ -39,7 +39,7 @@ export function AddBenchmarkForm() {
       </label>
       <label className="flex min-w-[200px] flex-1 flex-col gap-1 text-sm font-medium">
         Description
-        <input type="text" name="description" placeholder="e.g. 21-15-9 Thrusters, Pull-ups" className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm" />
+        <input type="text" name="description" placeholder="e.g. 21-15-9 Thrusters, Pull-ups" className="rounded-md border border-neutral-700 px-2 py-1.5 text-sm" />
       </label>
       <button
         type="submit"
@@ -48,7 +48,7 @@ export function AddBenchmarkForm() {
       >
         {pending ? "Adding…" : "Add benchmark"}
       </button>
-      {state.error && <p className="w-full text-sm text-red-600">{state.error}</p>}
+      {state.error && <p className="w-full text-sm text-red-400">{state.error}</p>}
     </form>
   );
 }

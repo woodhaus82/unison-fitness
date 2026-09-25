@@ -73,7 +73,7 @@ export default async function WorkoutsPage({
     <div className="flex flex-col gap-8">
       <section>
         <h1 className="text-2xl font-semibold">Weekly workouts</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-400">
           One workout per class type per day — it applies to every session of that type that day, however many time
           slots it runs in. Leave blank for no workout posted.
         </p>
@@ -83,7 +83,7 @@ export default async function WorkoutsPage({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">
             {format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}
-            {isCurrentWeek && <span className="ml-2 text-sm font-normal text-neutral-500">(this week)</span>}
+            {isCurrentWeek && <span className="ml-2 text-sm font-normal text-neutral-400">(this week)</span>}
           </h2>
           <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
             {nav("← Month", addMonths(weekStart, -1))}
@@ -100,7 +100,7 @@ export default async function WorkoutsPage({
             if (dayEntries.length === 0) return null;
             return (
               <div key={date}>
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">
                   {format(parseISO(date), "EEEE d MMMM")}
                 </h3>
                 <div className="mt-2 flex flex-col gap-4">
@@ -121,7 +121,7 @@ export default async function WorkoutsPage({
               </div>
             );
           })}
-          {byDay.size === 0 && <p className="text-neutral-500">Nothing scheduled this week.</p>}
+          {byDay.size === 0 && <p className="text-neutral-400">Nothing scheduled this week.</p>}
         </div>
       </section>
     </div>

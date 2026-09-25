@@ -24,7 +24,7 @@ export function WodEditor({ sessionId, initialWod }: { sessionId: string; initia
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={"e.g.\n5 rounds for time:\n10 pull-ups\n15 push-ups\n20 air squats"}
-        className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="rounded-md border border-neutral-700 px-3 py-2 text-sm"
       />
       <div className="flex items-center gap-3">
         <button
@@ -34,7 +34,7 @@ export function WodEditor({ sessionId, initialWod }: { sessionId: string; initia
         >
           {pending ? "Saving…" : "Save WOD"}
         </button>
-        {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+        {state.error && <p className="text-xs text-red-400">{state.error}</p>}
       </div>
     </form>
   );

@@ -56,9 +56,9 @@ export default async function SchedulePage({
         <h1 className="text-2xl font-semibold">
           {format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}
         </h1>
-        {isCurrentWeek && <span className="text-sm text-neutral-500">This week</span>}
+        {isCurrentWeek && <span className="text-sm text-neutral-400">This week</span>}
       </div>
-      <div className="mt-2 flex flex-wrap items-center gap-3 text-sm font-medium text-neutral-600">
+      <div className="mt-2 flex flex-wrap items-center gap-3 text-sm font-medium text-neutral-300">
         {nav("← Month", addMonths(weekStart, -1))}
         {nav("← Week", addDays(weekStart, -7))}
         {!isCurrentWeek && nav("This week", today)}
@@ -69,9 +69,9 @@ export default async function SchedulePage({
       <div className="mt-8 flex flex-col gap-8">
         {[...byDay.entries()].map(([date, daySessions]) => (
           <details key={date}>
-            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-neutral-500 marker:text-neutral-400">
+            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-neutral-400 marker:text-neutral-600">
               {format(parseISO(date), "EEEE d MMMM")}
-              <span className="ml-2 text-xs font-normal normal-case text-neutral-400">
+              <span className="ml-2 text-xs font-normal normal-case text-neutral-600">
                 ({daySessions!.length} class{daySessions!.length === 1 ? "" : "es"})
               </span>
             </summary>
@@ -80,29 +80,29 @@ export default async function SchedulePage({
                 const full = s.booked_count >= s.capacity;
                 const isPast = isSessionPast(s.session_date, s.start_time);
                 return (
-                  <li key={s.id} className="rounded-lg border border-neutral-200 px-4 py-3">
+                  <li key={s.id} className="rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">
                           {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} · {s.class_type_name}
                         </p>
-                        {s.coach_name && <p className="text-sm text-neutral-500">Coach: {s.coach_name}</p>}
-                        <p className="text-sm text-neutral-500">
+                        {s.coach_name && <p className="text-sm text-neutral-400">Coach: {s.coach_name}</p>}
+                        <p className="text-sm text-neutral-400">
                           {s.booked_count}/{s.capacity} booked
                           {s.waitlist_count > 0 ? ` · ${s.waitlist_count} waitlisted` : ""}
                         </p>
                         {s.my_booking_status === "waitlisted" && (
-                          <p className="text-sm text-amber-600">
+                          <p className="text-sm text-amber-400">
                             You&apos;re #{s.my_waitlist_position} on the waitlist
                           </p>
                         )}
                         {s.my_booking_status === "booked" && (
-                          <p className="text-sm text-green-700">You&apos;re booked in</p>
+                          <p className="text-sm text-green-400">You&apos;re booked in</p>
                         )}
                       </div>
 
                       {isPast ? (
-                        <span className="text-sm text-neutral-400">Class has passed</span>
+                        <span className="text-sm text-neutral-600">Class has passed</span>
                       ) : s.my_booking_id ? (
                         <CancelButton bookingId={s.my_booking_id} />
                       ) : (
@@ -120,7 +120,7 @@ export default async function SchedulePage({
           </details>
         ))}
 
-        {byDay.size === 0 && <p className="text-neutral-500">No classes scheduled this week.</p>}
+        {byDay.size === 0 && <p className="text-neutral-400">No classes scheduled this week.</p>}
       </div>
     </main>
   );

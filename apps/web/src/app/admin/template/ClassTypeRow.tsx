@@ -28,7 +28,7 @@ export function ClassTypeRow({
   }
 
   return (
-    <li className="flex items-center gap-3 rounded-lg border border-neutral-200 px-4 py-2">
+    <li className="flex items-center gap-3 rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-2">
       <input
         type="color"
         value={color}
@@ -36,16 +36,16 @@ export function ClassTypeRow({
           setColor(e.target.value);
           save({ name, default_capacity: capacity, color: e.target.value });
         }}
-        className="h-8 w-10 shrink-0 rounded border border-neutral-300"
+        className="h-8 w-10 shrink-0 rounded border border-neutral-700"
       />
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         onBlur={() => save({ name, default_capacity: capacity, color })}
-        className="min-w-0 flex-1 rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+        className="min-w-0 flex-1 rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
       />
-      <label className="flex shrink-0 items-center gap-2 text-sm text-neutral-500">
+      <label className="flex shrink-0 items-center gap-2 text-sm text-neutral-400">
         Capacity
         <input
           type="number"
@@ -53,11 +53,11 @@ export function ClassTypeRow({
           value={capacity}
           onChange={(e) => setCapacity(Number(e.target.value))}
           onBlur={() => save({ name, default_capacity: capacity, color })}
-          className="w-20 rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+          className="w-20 rounded-md border border-neutral-700 px-2 py-1.5 text-sm"
         />
       </label>
-      {pending && <span className="shrink-0 text-xs text-neutral-400">Saving…</span>}
-      {error && <span className="shrink-0 text-xs text-red-600">{error}</span>}
+      {pending && <span className="shrink-0 text-xs text-neutral-600">Saving…</span>}
+      {error && <span className="shrink-0 text-xs text-red-400">{error}</span>}
     </li>
   );
 }

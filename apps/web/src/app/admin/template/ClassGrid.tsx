@@ -45,7 +45,7 @@ export async function ClassGrid() {
   }
 
   if ((classTypes ?? []).length === 0) {
-    return <p className="text-neutral-500">Add a class type above before building the grid.</p>;
+    return <p className="text-neutral-400">Add a class type above before building the grid.</p>;
   }
 
   return (
@@ -54,11 +54,11 @@ export async function ClassGrid() {
         const slots = slotsByDay.get(day) ?? [];
         return (
           <div key={day}>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">{DAY_LABELS[day]}</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">{DAY_LABELS[day]}</h3>
             <div className="mt-2 overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="text-xs text-neutral-500">
+                  <tr className="text-xs text-neutral-400">
                     <th className="py-1 pr-3 font-medium">Time</th>
                     <th className="px-2 py-1 text-center font-medium">—</th>
                     {(classTypes ?? []).map((ct) => (
@@ -86,7 +86,7 @@ export async function ClassGrid() {
                   ))}
                 </tbody>
               </table>
-              {slots.length === 0 && <p className="py-1 text-sm text-neutral-500">No time slots yet for this day.</p>}
+              {slots.length === 0 && <p className="py-1 text-sm text-neutral-400">No time slots yet for this day.</p>}
             </div>
             <div className="mt-2">
               <AddTimeSlotForm dayOfWeek={day} />

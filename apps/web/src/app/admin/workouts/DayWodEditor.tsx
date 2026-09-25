@@ -38,13 +38,13 @@ export function DayWodEditor({
         }}
         onBlur={save}
         placeholder="Leave blank for no workout posted"
-        className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="rounded-md border border-neutral-700 px-3 py-2 text-sm"
       />
-      <div className="flex items-center gap-2 text-xs text-neutral-500">
+      <div className="flex items-center gap-2 text-xs text-neutral-400">
         {sessionCount > 1 && <span>Applies to all {sessionCount} classes that day</span>}
         {pending && <span>Saving…</span>}
-        {saved && !pending && <span className="text-green-700">Saved</span>}
-        {error && <span className="text-red-600">{error}</span>}
+        {saved && !pending && <span className="text-green-400">Saved</span>}
+        {error && <span className="text-red-400">{error}</span>}
       </div>
     </div>
   );

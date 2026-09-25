@@ -25,7 +25,7 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
 
   if (!sessions || sessions.length === 0) {
     return (
-      <p className="text-neutral-500">
+      <p className="text-neutral-400">
         Nothing scheduled this week — add slots to the recurring template, or import a spreadsheet, to populate it.
       </p>
     );
@@ -61,13 +61,13 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
       <table className="w-full border-separate border-spacing-0 text-sm">
         <thead>
           <tr>
-            <th className="w-20 border-b border-neutral-200 py-2 pr-2 text-left text-xs font-medium text-neutral-500">
+            <th className="w-20 border-b border-neutral-800 py-2 pr-2 text-left text-xs font-medium text-neutral-400">
               Time
             </th>
             {days.map((day) => (
               <th
                 key={day.toISOString()}
-                className="min-w-[120px] border-b border-l border-neutral-200 px-2 py-2 text-left text-xs font-medium text-neutral-500"
+                className="min-w-[120px] border-b border-l border-neutral-800 px-2 py-2 text-left text-xs font-medium text-neutral-400"
               >
                 {format(day, "EEE d MMM")}
               </th>
@@ -77,14 +77,14 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
         <tbody>
           {rowTimes.map((time) => (
             <tr key={time}>
-              <td className="border-b border-neutral-100 py-2 pr-2 align-top text-xs font-medium text-neutral-500">
+              <td className="border-b border-neutral-800 py-2 pr-2 align-top text-xs font-medium text-neutral-400">
                 {time.slice(0, 5)}
               </td>
               {days.map((day) => {
                 const dateStr = format(day, "yyyy-MM-dd");
                 const cellSessions = byCell.get(`${dateStr}|${time}`) ?? [];
                 return (
-                  <td key={dateStr} className="border-b border-l border-neutral-100 p-1 align-top">
+                  <td key={dateStr} className="border-b border-l border-neutral-800 p-1 align-top">
                     <div className="flex flex-col gap-1">
                       {cellSessions.map((s) => {
                         const classType = Array.isArray(s.class_types) ? s.class_types[0] : s.class_types;
@@ -94,11 +94,11 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                           <Link
                             key={s.id}
                             href={`/admin/roster/${s.id}`}
-                            className="block rounded-md border border-neutral-200 px-2 py-1 text-xs hover:bg-neutral-50"
+                            className="block rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-xs hover:bg-neutral-800"
                             style={classType?.color ? { borderLeftColor: classType.color, borderLeftWidth: 3 } : undefined}
                           >
                             <div>{classType?.name ?? "Class"}</div>
-                            <div className={full ? "font-medium text-amber-600" : "text-neutral-500"}>
+                            <div className={full ? "font-medium text-amber-400" : "text-neutral-400"}>
                               {count.booked}/{s.capacity}
                               {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
                             </div>

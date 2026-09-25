@@ -26,7 +26,7 @@ export default async function AdminSchedulePage({
     <div className="flex flex-col gap-10">
       <section>
         <h1 className="text-2xl font-semibold">Class programming</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-400">
           The calendar below is populated automatically from your recurring template — no need to generate weeks by
           hand.
         </p>
@@ -36,7 +36,7 @@ export default async function AdminSchedulePage({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">
             {format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}
-            {isCurrentWeek && <span className="ml-2 text-sm font-normal text-neutral-500">(this week)</span>}
+            {isCurrentWeek && <span className="ml-2 text-sm font-normal text-neutral-400">(this week)</span>}
           </h2>
           <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
             {nav("← Month", addMonths(weekStart, -1))}

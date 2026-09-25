@@ -17,7 +17,7 @@ export default async function MembersPage() {
     <div className="flex flex-col gap-6">
       <section>
         <h1 className="text-2xl font-semibold">Members</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-sm text-neutral-400">
           Promote a member to admin or coach, or delete someone who&apos;s left the gym. Deleting removes their
           account, bookings and history permanently.
         </p>
@@ -34,7 +34,7 @@ export default async function MembersPage() {
             isSelf={m.id === profile.id}
           />
         ))}
-        {(members ?? []).length === 0 && <p className="text-neutral-500">No members yet.</p>}
+        {(members ?? []).length === 0 && <p className="text-neutral-400">No members yet.</p>}
       </ul>
     </div>
   );

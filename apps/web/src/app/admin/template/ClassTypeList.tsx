@@ -13,7 +13,7 @@ export async function ClassTypeList() {
       {(classTypes ?? []).map((ct) => (
         <ClassTypeRow key={ct.id} id={ct.id} initialName={ct.name} initialCapacity={ct.default_capacity} initialColor={ct.color} />
       ))}
-      {(classTypes ?? []).length === 0 && <p className="text-sm text-neutral-500">No class types yet.</p>}
+      {(classTypes ?? []).length === 0 && <p className="text-sm text-neutral-400">No class types yet.</p>}
     </ul>
   );
 }

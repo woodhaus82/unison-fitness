@@ -11,10 +11,10 @@ export default async function SignupPage({
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6 py-12">
       <h1 className="text-2xl font-semibold">Create your account</h1>
-      <p className="mt-1 text-sm text-neutral-500">Book into classes at Unison Fitness</p>
+      <p className="mt-1 text-sm text-neutral-400">Book into classes at Unison Fitness</p>
 
       {error && (
-        <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="mt-4 rounded-md bg-red-950 px-3 py-2 text-sm text-red-400">{error}</p>
       )}
 
       <form action={signUp} className="mt-6 flex flex-col gap-4">
@@ -25,7 +25,7 @@ export default async function SignupPage({
             name="full_name"
             required
             autoComplete="name"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-base"
+            className="rounded-md border border-neutral-700 px-3 py-2 text-base"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm font-medium">
@@ -35,7 +35,7 @@ export default async function SignupPage({
             name="email"
             required
             autoComplete="email"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-base"
+            className="rounded-md border border-neutral-700 px-3 py-2 text-base"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm font-medium">
@@ -46,7 +46,7 @@ export default async function SignupPage({
             required
             minLength={8}
             autoComplete="new-password"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-base"
+            className="rounded-md border border-neutral-700 px-3 py-2 text-base"
           />
         </label>
         <button
@@ -57,9 +57,9 @@ export default async function SignupPage({
         </button>
       </form>
 
-      <p className="mt-6 text-sm text-neutral-500">
+      <p className="mt-6 text-sm text-neutral-400">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-neutral-900 underline">
+        <Link href="/login" className="font-medium text-white underline">
           Log in
         </Link>
       </p>
