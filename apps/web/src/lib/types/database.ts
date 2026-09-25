@@ -148,6 +148,23 @@ export interface Database {
           },
         ];
       };
+      time_slots: {
+        Row: {
+          id: string;
+          day_of_week: number;
+          start_time: string;
+          end_time: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["time_slots"]["Row"]> & {
+          day_of_week: number;
+          start_time: string;
+          end_time: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["time_slots"]["Row"]>;
+        Relationships: [];
+      };
       membership_plans: {
         Row: {
           id: string;
