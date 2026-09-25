@@ -84,8 +84,8 @@ export default async function SchedulePage({
                         <p className="font-medium">
                           {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} · {s.class_type_name}
                         </p>
+                        {s.coach_name && <p className="text-sm text-neutral-500">Coach: {s.coach_name}</p>}
                         <p className="text-sm text-neutral-500">
-                          {s.coach_name ? `${s.coach_name} · ` : ""}
                           {s.booked_count}/{s.capacity} booked
                           {s.waitlist_count > 0 ? ` · ${s.waitlist_count} waitlisted` : ""}
                         </p>
