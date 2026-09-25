@@ -71,7 +71,7 @@ export default function BookingsScreen() {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator />
+        <ActivityIndicator color={colors.brand} />
       </View>
     );
   }
@@ -102,7 +102,7 @@ export default function BookingsScreen() {
               </View>
               {active &&
                 (cancellingId === b.id ? (
-                  <ActivityIndicator />
+                  <ActivityIndicator color={colors.brand} />
                 ) : (
                   <Pressable style={styles.secondaryButton} onPress={() => handleCancel(b.id)}>
                     <Text style={styles.secondaryButtonText}>Cancel</Text>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 40 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.bg },
   empty: { color: colors.muted, marginTop: 24, fontFamily: fonts.body },
-  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
+  card: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.bgSubtle, borderRadius: 10, padding: 14, marginBottom: 8 },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   flex1: { flex: 1, paddingRight: 12 },
   title: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },

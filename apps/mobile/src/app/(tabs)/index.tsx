@@ -101,7 +101,7 @@ export default function ScheduleScreen() {
       </View>
 
       {loading ? (
-        <ActivityIndicator style={styles.loading} />
+        <ActivityIndicator style={styles.loading} color={colors.brand} />
       ) : days.length === 0 ? (
         <Text style={styles.empty}>No classes scheduled this week.</Text>
       ) : (

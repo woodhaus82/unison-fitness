@@ -23,7 +23,7 @@ export function WorkoutLink({ wod }: { wod: string | null }) {
 
 const styles = StyleSheet.create({
   link: { fontSize: 14, fontFamily: fonts.bodyMedium, color: colors.ink, textDecorationLine: "underline" },
-  box: { marginTop: 8, backgroundColor: colors.bgSubtle, borderRadius: 8, padding: 10 },
+  box: { marginTop: 8, backgroundColor: colors.bgElevated, borderRadius: 8, padding: 10 },
   wodText: { fontSize: 14, color: colors.text, fontFamily: fonts.body },
   emptyText: { fontSize: 14, color: colors.muted, fontFamily: fonts.body },
 });

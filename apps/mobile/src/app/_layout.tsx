@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts, ArchivoBlack_400Regular } from "@expo-google-fonts/archivo-black";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@expo-google-fonts/montserrat";
 import { ActivityIndicator, View } from "react-native";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
+import { colors } from "@/lib/theme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,14 +20,14 @@ function RootNavigator() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator />
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.bg }}>
+        <ActivityIndicator color={colors.brand} />
       </View>
     );
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(tabs)" />
       </Stack.Protected>
@@ -56,6 +58,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <StatusBar style="light" />
       <RootNavigator />
     </AuthProvider>
   );

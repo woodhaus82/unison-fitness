@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: { color: "#000", fontSize: 16, fontFamily: fonts.bodySemiBold },
-  errorBox: { marginTop: 16, backgroundColor: "#fef2f2", borderRadius: 8, padding: 12 },
+  errorBox: { marginTop: 16, backgroundColor: colors.dangerBg, borderRadius: 8, padding: 12 },
   errorText: { color: colors.danger, fontSize: 14, fontFamily: fonts.body },
   link: { marginTop: 16, fontSize: 14, color: colors.ink, fontFamily: fonts.bodyMedium, textDecorationLine: "underline" },
   footer: { marginTop: 24, flexDirection: "row" },

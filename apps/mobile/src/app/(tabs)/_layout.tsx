@@ -7,7 +7,11 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.brand,
-        headerTitleStyle: { fontFamily: fonts.heading, fontSize: 18 },
+        tabBarInactiveTintColor: colors.muted,
+        tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.border },
+        headerStyle: { backgroundColor: colors.bg },
+        headerTintColor: colors.ink,
+        headerTitleStyle: { fontFamily: fonts.heading, fontSize: 18, color: colors.ink },
       }}
     >
       <Tabs.Screen

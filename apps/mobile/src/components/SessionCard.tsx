@@ -50,7 +50,7 @@ export function SessionCard({ session, onChanged }: { session: SessionRow; onCha
 
         <View>
           {pending ? (
-            <ActivityIndicator />
+            <ActivityIndicator color={colors.brand} />
           ) : past ? (
             <Text style={styles.pastText}>Class has passed</Text>
           ) : session.my_booking_id ? (
@@ -73,7 +73,7 @@ export function SessionCard({ session, onChanged }: { session: SessionRow; onCha
 }
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
+  card: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.bgSubtle, borderRadius: 10, padding: 14, marginBottom: 8 },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   flex1: { flex: 1, paddingRight: 12 },
   title: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },

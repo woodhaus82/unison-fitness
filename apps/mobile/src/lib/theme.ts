@@ -1,19 +1,22 @@
 // Brand extracted from unison.fitness (logo accent color + site CSS) —
-// kept in sync with apps/web/src/app/globals.css.
+// kept in sync with apps/web/src/app/globals.css (dark theme).
 export const colors = {
   brand: "#20b2aa",
   brandHover: "#27d0c7",
-  ink: "#171717",
-  text: "#404040",
-  muted: "#737373",
-  mutedLight: "#a3a3a3",
-  border: "#e5e5e5",
-  borderInput: "#d4d4d4",
-  bg: "#fff",
-  bgSubtle: "#fafafa",
-  success: "#15803d",
-  warning: "#b45309",
-  danger: "#b91c1c",
+  ink: "#f5f5f5",
+  text: "#d4d4d4",
+  muted: "#a3a3a3",
+  mutedLight: "#737373",
+  border: "#262626",
+  borderInput: "#404040",
+  bg: "#0a0a0a",
+  bgSubtle: "#171717",
+  bgElevated: "#1f1f1f",
+  success: "#4ade80",
+  successBg: "#052e16",
+  warning: "#fbbf24",
+  danger: "#f87171",
+  dangerBg: "#450a0a",
 };
 
 export const fonts = {

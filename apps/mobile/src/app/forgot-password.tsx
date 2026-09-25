@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: { color: "#000", fontSize: 16, fontFamily: fonts.bodySemiBold },
-  messageBox: { marginTop: 16, backgroundColor: "#f0fdf4", borderRadius: 8, padding: 12 },
+  messageBox: { marginTop: 16, backgroundColor: colors.successBg, borderRadius: 8, padding: 12 },
   messageText: { color: colors.success, fontSize: 14, fontFamily: fonts.body },
   link: { marginTop: 16, fontSize: 14, color: colors.ink, fontFamily: fonts.bodyMedium, textDecorationLine: "underline" },
 });

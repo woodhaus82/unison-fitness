@@ -170,7 +170,7 @@ export function BenchmarkCard({
 }
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
+  card: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.bgSubtle, borderRadius: 10, padding: 14, marginBottom: 8 },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   flex1: { flex: 1, paddingRight: 12 },
   name: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   noPb: { fontSize: 13, color: colors.mutedLight, marginTop: 4, fontFamily: fonts.body },
   logButton: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12 },
   logButtonText: { fontSize: 13, fontFamily: fonts.bodySemiBold, color: colors.ink },
-  form: { marginTop: 12, borderTopWidth: 1, borderTopColor: "#f0f0f0", paddingTop: 12, gap: 8 },
+  form: { marginTop: 12, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 12, gap: 8 },
   row: { flexDirection: "row", gap: 8 },
   smallInput: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, width: 70, fontSize: 15, fontFamily: fonts.body },
   input: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontSize: 15, fontFamily: fonts.body },
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   saveButton: { backgroundColor: colors.brand, borderRadius: 999, paddingVertical: 10, alignItems: "center" },
   saveButtonText: { color: "#000", fontSize: 14, fontFamily: fonts.bodySemiBold },
   historyToggle: { marginTop: 10, fontSize: 13, fontFamily: fonts.bodySemiBold, color: colors.text, textDecorationLine: "underline" },
-  historyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: colors.bgSubtle, borderRadius: 8, padding: 8, marginTop: 6 },
+  historyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: colors.bgElevated, borderRadius: 8, padding: 8, marginTop: 6 },
   historyText: { flex: 1, fontSize: 12, color: colors.text, fontFamily: fonts.body },
   deleteText: { fontSize: 12, color: colors.danger, textDecorationLine: "underline" },
 });

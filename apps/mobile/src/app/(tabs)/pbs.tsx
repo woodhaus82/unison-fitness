@@ -42,7 +42,7 @@ export default function PbsScreen() {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator />
+        <ActivityIndicator color={colors.brand} />
       </View>
     );
   }
