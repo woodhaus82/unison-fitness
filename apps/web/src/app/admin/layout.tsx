@@ -13,6 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin/schedule">Schedule</Link>
             <Link href="/admin/workouts">Workouts</Link>
             <Link href="/admin/template">Recurring template</Link>
+            {profile.role === "admin" && <Link href="/admin/members">Members</Link>}
             <Link href="/schedule">Member view</Link>
           </nav>
           <div className="flex items-center gap-4 text-sm text-neutral-500">
