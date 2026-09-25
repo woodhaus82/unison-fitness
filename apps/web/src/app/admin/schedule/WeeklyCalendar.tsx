@@ -4,6 +4,30 @@ import { createClient } from "@/lib/supabase/server";
 
 const DAY_COUNT = 7;
 
+// Grid bounds and scale — a fixed 06:00-19:30 range covers the gym's
+// actual opening hours with room either side, at 1hr-tall gridlines.
+// Session blocks are positioned continuously within this by real time,
+// not snapped to the gridlines, so e.g. a 07:30-09:00 class lines up
+// exactly with the half-hour mark instead of the nearest hour row.
+const GRID_START_MINUTES = 6 * 60;
+const GRID_END_MINUTES = 19.5 * 60;
+const PX_PER_HOUR = 80;
+const GRID_HEIGHT = ((GRID_END_MINUTES - GRID_START_MINUTES) / 60) * PX_PER_HOUR;
+const HOUR_MARKS = Array.from(
+  { length: Math.floor(GRID_END_MINUTES / 60) - GRID_START_MINUTES / 60 + 1 },
+  (_, i) => GRID_START_MINUTES / 60 + i
+);
+
+function timeToMinutes(time: string) {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function offsetFor(time: string) {
+  const minutes = Math.min(Math.max(timeToMinutes(time), GRID_START_MINUTES), GRID_END_MINUTES);
+  return ((minutes - GRID_START_MINUTES) / 60) * PX_PER_HOUR;
+}
+
 export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
   const supabase = await createClient();
 
@@ -46,107 +70,106 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
   }
 
   // Group by "date|start_time" so multiple classes at the same slot (rare,
-  // e.g. two rooms running at once) still show up in one cell.
-  const byCell = new Map<string, typeof sessions>();
+  // e.g. two rooms running at once) lay out side by side instead of
+  // overlapping.
+  const byDay = new Map<string, typeof sessions>();
   for (const s of sessions) {
-    const key = `${s.session_date}|${s.start_time}`;
-    if (!byCell.has(key)) byCell.set(key, []);
-    byCell.get(key)!.push(s);
+    if (!byDay.has(s.session_date)) byDay.set(s.session_date, []);
+    byDay.get(s.session_date)!.push(s);
   }
-
-  const rowTimes = [...new Set(sessions.map((s) => s.start_time))].sort();
-
-  // How many of this week's row lines a session's duration covers, so its
-  // box can visually extend down past its start row instead of always
-  // looking like a fixed-length 15-30min slot regardless of real length.
-  // Rows aren't evenly spaced in time, so this counts row *lines* within
-  // [start_time, end_time), not actual minutes.
-  function rowSpanFor(rowIndex: number, endTime: string) {
-    let span = 0;
-    for (let i = rowIndex; i < rowTimes.length && rowTimes[i] < endTime; i++) span++;
-    return Math.max(span, 1);
-  }
-
-  // Once a cell is rendered with rowSpan > 1, later rows must skip that
-  // column entirely (an HTML table row can't have a <td> in a position a
-  // previous row's rowSpan already occupies) — tracked per day here.
-  const skipUntilRowIndex = new Map(days.map((d) => [format(d, "yyyy-MM-dd"), 0]));
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-separate border-spacing-0 text-sm">
-        <thead>
-          <tr>
-            <th className="w-20 border-b border-neutral-800 py-2 pr-2 text-left text-xs font-medium text-neutral-400">
-              Time
-            </th>
-            {days.map((day) => (
-              <th
-                key={day.toISOString()}
-                className="min-w-[120px] border-b border-l border-neutral-800 px-2 py-2 text-left text-xs font-medium text-neutral-400"
-              >
-                {format(day, "EEE d MMM")}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rowTimes.map((time, rowIndex) => (
-            <tr key={time}>
-              <td className="border-b border-neutral-800 py-2 pr-2 align-top text-xs font-medium text-neutral-400">
-                {time.slice(0, 5)}
-              </td>
-              {days.map((day) => {
-                const dateStr = format(day, "yyyy-MM-dd");
+      <div className="flex min-w-[900px]">
+        <div className="w-14 shrink-0" />
+        {days.map((day) => (
+          <div
+            key={day.toISOString()}
+            className="min-w-[120px] flex-1 border-b border-l border-neutral-800 px-2 py-2 text-xs font-medium text-neutral-400"
+          >
+            {format(day, "EEE d MMM")}
+          </div>
+        ))}
+      </div>
 
-                if (rowIndex < (skipUntilRowIndex.get(dateStr) ?? 0)) {
-                  return null;
-                }
-
-                const cellSessions = byCell.get(`${dateStr}|${time}`) ?? [];
-                const rowSpan =
-                  cellSessions.length === 0
-                    ? 1
-                    : Math.max(...cellSessions.map((s) => rowSpanFor(rowIndex, s.end_time)));
-                skipUntilRowIndex.set(dateStr, rowIndex + rowSpan);
-
-                return (
-                  <td
-                    key={dateStr}
-                    rowSpan={rowSpan}
-                    className="border-b border-l border-neutral-800 p-1 align-top"
-                  >
-                    <div className="flex flex-col gap-1">
-                      {cellSessions.map((s) => {
-                        const classType = Array.isArray(s.class_types) ? s.class_types[0] : s.class_types;
-                        const count = counts.get(s.id) ?? { booked: 0, waitlisted: 0 };
-                        const full = count.booked >= s.capacity;
-                        return (
-                          <Link
-                            key={s.id}
-                            href={`/admin/roster/${s.id}`}
-                            className="block rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-xs hover:bg-neutral-800"
-                            style={classType?.color ? { borderLeftColor: classType.color, borderLeftWidth: 3 } : undefined}
-                          >
-                            <div>{classType?.name ?? "Class"}</div>
-                            <div className="text-neutral-500">
-                              {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
-                            </div>
-                            <div className={full ? "font-medium text-amber-400" : "text-neutral-400"}>
-                              {count.booked}/{s.capacity}
-                              {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
+      <div className="flex min-w-[900px]">
+        <div className="relative w-14 shrink-0" style={{ height: GRID_HEIGHT }}>
+          {HOUR_MARKS.map((h) => (
+            <div
+              key={h}
+              className="absolute right-2 -translate-y-1/2 text-xs font-medium text-neutral-400"
+              style={{ top: (h - GRID_START_MINUTES / 60) * PX_PER_HOUR }}
+            >
+              {String(h).padStart(2, "0")}:00
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+
+        {days.map((day) => {
+          const dateStr = format(day, "yyyy-MM-dd");
+          const daySessions = byDay.get(dateStr) ?? [];
+
+          // Cluster sessions that share an exact start time so they can
+          // split the column width between them instead of stacking.
+          const clusters = new Map<string, typeof sessions>();
+          for (const s of daySessions) {
+            if (!clusters.has(s.start_time)) clusters.set(s.start_time, []);
+            clusters.get(s.start_time)!.push(s);
+          }
+
+          return (
+            <div
+              key={dateStr}
+              className="relative min-w-[120px] flex-1 border-l border-neutral-800"
+              style={{ height: GRID_HEIGHT }}
+            >
+              {HOUR_MARKS.map((h) => (
+                <div
+                  key={h}
+                  className="absolute inset-x-0 border-t border-neutral-800/60"
+                  style={{ top: (h - GRID_START_MINUTES / 60) * PX_PER_HOUR }}
+                />
+              ))}
+
+              {[...clusters.values()].flatMap((cluster) =>
+                cluster.map((s, i) => {
+                  const classType = Array.isArray(s.class_types) ? s.class_types[0] : s.class_types;
+                  const count = counts.get(s.id) ?? { booked: 0, waitlisted: 0 };
+                  const full = count.booked >= s.capacity;
+                  const top = offsetFor(s.start_time);
+                  const height = Math.max(offsetFor(s.end_time) - top, 24);
+                  const widthPct = 100 / cluster.length;
+
+                  return (
+                    <Link
+                      key={s.id}
+                      href={`/admin/roster/${s.id}`}
+                      className="absolute overflow-hidden rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-xs hover:bg-neutral-800"
+                      style={{
+                        top,
+                        height,
+                        left: `${i * widthPct}%`,
+                        width: `${widthPct}%`,
+                        borderLeftColor: classType?.color,
+                        borderLeftWidth: classType?.color ? 3 : undefined,
+                      }}
+                    >
+                      <div className="truncate">{classType?.name ?? "Class"}</div>
+                      <div className="text-neutral-500">
+                        {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
+                      </div>
+                      <div className={full ? "font-medium text-amber-400" : "text-neutral-400"}>
+                        {count.booked}/{s.capacity}
+                        {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
+                      </div>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
