@@ -1,8 +1,27 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { format, parseISO } from "date-fns";
 import { updateMemberRole, deleteMember } from "./actions";
 import type { UserRole } from "@/lib/types/database";
+import type { MembershipSummary } from "@/lib/membership";
+
+function MembershipBadge({ membership }: { membership: MembershipSummary }) {
+  switch (membership.kind) {
+    case "monthly_unlimited":
+      return (
+        <p className="text-sm text-green-400">
+          Monthly Unlimited{membership.isComp ? " (comp)" : ""}
+        </p>
+      );
+    case "trial":
+      return <p className="text-sm text-amber-400">Trial — ends {format(parseISO(membership.endDate), "d MMM")}</p>;
+    case "session_pack":
+      return <p className="text-sm text-green-400">{membership.creditsRemaining} credits left</p>;
+    case "none":
+      return <p className="text-sm text-red-400">No active membership</p>;
+  }
+}
 
 export function MemberRow({
   id,
@@ -10,12 +29,14 @@ export function MemberRow({
   email,
   role,
   isSelf,
+  membership,
 }: {
   id: string;
   fullName: string | null;
   email: string;
   role: UserRole;
   isSelf: boolean;
+  membership: MembershipSummary;
 }) {
   const [currentRole, setCurrentRole] = useState(role);
   const [pending, startTransition] = useTransition();
@@ -61,6 +82,11 @@ export function MemberRow({
           {isSelf && <span className="ml-2 text-xs font-normal text-neutral-600">(you)</span>}
         </p>
         <p className="text-sm text-neutral-400">{email}</p>
+        {currentRole === "member" ? (
+          <MembershipBadge membership={membership} />
+        ) : (
+          <p className="text-sm text-neutral-500">Staff — no membership required</p>
+        )}
         {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
       <div className="flex items-center gap-2">
