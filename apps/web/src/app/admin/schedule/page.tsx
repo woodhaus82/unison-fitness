@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { addDays, addMonths, format, startOfWeek, parseISO } from "date-fns";
-import { ScheduleUploader } from "./ScheduleUploader";
 import { WeeklyCalendar } from "./WeeklyCalendar";
 
 export default async function AdminSchedulePage({
@@ -29,15 +28,8 @@ export default async function AdminSchedulePage({
         <h1 className="text-2xl font-semibold">Class programming</h1>
         <p className="mt-1 text-sm text-neutral-500">
           The calendar below is populated automatically from your recurring template — no need to generate weeks by
-          hand. Use spreadsheet import for one-off overrides.
+          hand.
         </p>
-      </section>
-
-      <section>
-        <h2 className="text-lg font-semibold">Import schedule</h2>
-        <div className="mt-4">
-          <ScheduleUploader />
-        </div>
       </section>
 
       <section>
