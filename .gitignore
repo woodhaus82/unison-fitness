@@ -3,6 +3,12 @@ node_modules/
 *.log
 .vercel/
 
+# Not committed: package-lock.json bakes in the *current host's* optional
+# native binaries only (e.g. lightningcss-darwin-arm64), which broke Vercel's
+# Linux build (it needs lightningcss-linux-x64-gnu, never recorded here on a
+# Mac). Each environment resolves its own lockfile locally instead.
+package-lock.json
+
 # Supabase local dev
 supabase/.branches
 supabase/.temp
