@@ -56,6 +56,22 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
 
   const rowTimes = [...new Set(sessions.map((s) => s.start_time))].sort();
 
+  // How many of this week's row lines a session's duration covers, so its
+  // box can visually extend down past its start row instead of always
+  // looking like a fixed-length 15-30min slot regardless of real length.
+  // Rows aren't evenly spaced in time, so this counts row *lines* within
+  // [start_time, end_time), not actual minutes.
+  function rowSpanFor(rowIndex: number, endTime: string) {
+    let span = 0;
+    for (let i = rowIndex; i < rowTimes.length && rowTimes[i] < endTime; i++) span++;
+    return Math.max(span, 1);
+  }
+
+  // Once a cell is rendered with rowSpan > 1, later rows must skip that
+  // column entirely (an HTML table row can't have a <td> in a position a
+  // previous row's rowSpan already occupies) — tracked per day here.
+  const skipUntilRowIndex = new Map(days.map((d) => [format(d, "yyyy-MM-dd"), 0]));
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-separate border-spacing-0 text-sm">
@@ -75,16 +91,31 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
           </tr>
         </thead>
         <tbody>
-          {rowTimes.map((time) => (
+          {rowTimes.map((time, rowIndex) => (
             <tr key={time}>
               <td className="border-b border-neutral-800 py-2 pr-2 align-top text-xs font-medium text-neutral-400">
                 {time.slice(0, 5)}
               </td>
               {days.map((day) => {
                 const dateStr = format(day, "yyyy-MM-dd");
+
+                if (rowIndex < (skipUntilRowIndex.get(dateStr) ?? 0)) {
+                  return null;
+                }
+
                 const cellSessions = byCell.get(`${dateStr}|${time}`) ?? [];
+                const rowSpan =
+                  cellSessions.length === 0
+                    ? 1
+                    : Math.max(...cellSessions.map((s) => rowSpanFor(rowIndex, s.end_time)));
+                skipUntilRowIndex.set(dateStr, rowIndex + rowSpan);
+
                 return (
-                  <td key={dateStr} className="border-b border-l border-neutral-800 p-1 align-top">
+                  <td
+                    key={dateStr}
+                    rowSpan={rowSpan}
+                    className="border-b border-l border-neutral-800 p-1 align-top"
+                  >
                     <div className="flex flex-col gap-1">
                       {cellSessions.map((s) => {
                         const classType = Array.isArray(s.class_types) ? s.class_types[0] : s.class_types;
@@ -98,6 +129,9 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                             style={classType?.color ? { borderLeftColor: classType.color, borderLeftWidth: 3 } : undefined}
                           >
                             <div>{classType?.name ?? "Class"}</div>
+                            <div className="text-neutral-500">
+                              {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
+                            </div>
                             <div className={full ? "font-medium text-amber-400" : "text-neutral-400"}>
                               {count.booked}/{s.capacity}
                               {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
