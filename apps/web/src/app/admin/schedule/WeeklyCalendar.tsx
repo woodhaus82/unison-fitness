@@ -11,6 +11,10 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
   const weekStartStr = format(days[0], "yyyy-MM-dd");
   const weekEndStr = format(days[DAY_COUNT - 1], "yyyy-MM-dd");
 
+  // Materializes any sessions for this week that don't exist yet, from the
+  // recurring template — idempotent, so this is safe to call on every view.
+  await supabase.rpc("generate_sessions_from_schedule", { p_week_start: weekStartStr });
+
   const { data: sessions } = await supabase
     .from("class_sessions")
     .select("id, session_date, start_time, end_time, class_types(name, color)")
@@ -22,8 +26,7 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
   if (!sessions || sessions.length === 0) {
     return (
       <p className="text-neutral-500">
-        No sessions generated for this week yet — use &quot;Generate this week from recurring template&quot; above,
-        or import a spreadsheet.
+        Nothing scheduled this week — add slots to the recurring template, or import a spreadsheet, to populate it.
       </p>
     );
   }

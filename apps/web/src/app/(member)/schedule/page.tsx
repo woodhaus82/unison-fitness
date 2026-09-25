@@ -1,18 +1,34 @@
-import { addDays, format, parseISO } from "date-fns";
+import Link from "next/link";
+import { addDays, addMonths, format, parseISO, startOfWeek } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
 import { BookButton, CancelButton } from "@/components/BookingButton";
 
-export default async function SchedulePage() {
+export default async function SchedulePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ week?: string }>;
+}) {
   await requireProfile();
   const supabase = await createClient();
+  const { week } = await searchParams;
 
-  const from = new Date();
-  const to = addDays(from, 7);
+  const today = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const weekStart = week ? startOfWeek(parseISO(week), { weekStartsOn: 1 }) : today;
+  const weekEnd = addDays(weekStart, 6);
+  const weekStartStr = format(weekStart, "yyyy-MM-dd");
+  const weekEndStr = format(weekEnd, "yyyy-MM-dd");
+  const isCurrentWeek = weekStartStr === format(today, "yyyy-MM-dd");
+
+  // Materializes this week's sessions from the recurring template if they
+  // don't already exist — idempotent, so safe on every view. This is what
+  // lets members browse and book arbitrarily far ahead without an admin
+  // having generated that week first.
+  await supabase.rpc("generate_sessions_from_schedule", { p_week_start: weekStartStr });
 
   const { data: sessions, error } = await supabase.rpc("list_sessions", {
-    p_from: format(from, "yyyy-MM-dd"),
-    p_to: format(to, "yyyy-MM-dd"),
+    p_from: weekStartStr,
+    p_to: weekEndStr,
   });
 
   if (error) {
@@ -26,9 +42,27 @@ export default async function SchedulePage() {
     byDay.get(key)!.push(s);
   }
 
+  const nav = (label: string, target: Date) => (
+    <Link href={`/schedule?week=${format(target, "yyyy-MM-dd")}`} className="underline">
+      {label}
+    </Link>
+  );
+
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
-      <h1 className="text-2xl font-semibold">This week</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold">
+          {format(weekStart, "d MMM")} – {format(weekEnd, "d MMM yyyy")}
+        </h1>
+        {isCurrentWeek && <span className="text-sm text-neutral-500">This week</span>}
+      </div>
+      <div className="mt-2 flex flex-wrap items-center gap-3 text-sm font-medium text-neutral-600">
+        {nav("← Month", addMonths(weekStart, -1))}
+        {nav("← Week", addDays(weekStart, -7))}
+        {!isCurrentWeek && nav("This week", today)}
+        {nav("Week →", addDays(weekStart, 7))}
+        {nav("Month →", addMonths(weekStart, 1))}
+      </div>
 
       <div className="mt-8 flex flex-col gap-8">
         {[...byDay.entries()].map(([date, daySessions]) => (
@@ -80,9 +114,7 @@ export default async function SchedulePage() {
           </section>
         ))}
 
-        {byDay.size === 0 && (
-          <p className="text-neutral-500">No classes scheduled this week yet — check back soon.</p>
-        )}
+        {byDay.size === 0 && <p className="text-neutral-500">No classes scheduled this week.</p>}
       </div>
     </main>
   );
