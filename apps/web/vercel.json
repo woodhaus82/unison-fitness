@@ -1,5 +1,4 @@
 {
-  "installCommand": "npm install --include=optional",
   "crons": [
     { "path": "/api/cron/no-shows", "schedule": "0 3 * * *" },
     { "path": "/api/cron/dispatch-emails", "schedule": "5 3 * * *" }
