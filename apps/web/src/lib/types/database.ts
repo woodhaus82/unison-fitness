@@ -380,6 +380,10 @@ export interface Database {
         Args: { p_session_id: string };
         Returns: Database["public"]["Tables"]["bookings"]["Row"];
       };
+      select_membership_plan: {
+        Args: { p_plan_id: string };
+        Returns: Database["public"]["Tables"]["memberships"]["Row"];
+      };
       cancel_booking: {
         Args: { p_booking_id: string };
         Returns: Database["public"]["Tables"]["bookings"]["Row"];

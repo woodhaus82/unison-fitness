@@ -1,11 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/login/actions";
 
 export default async function MemberLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireProfile();
   const isStaff = profile.role === "admin" || profile.role === "coach";
+
+  // A member who's never had a membership row at all (brand new signup)
+  // gets funneled to plan selection before they can see anything else —
+  // covers every entry point (login redirect, direct URL, bookmark) in
+  // one place rather than special-casing just the post-signup redirect.
+  // Anyone whose membership has since expired/run out isn't caught by
+  // this — that's a "renew" prompt, a different feature to this "you've
+  // never had one" check.
+  if (!isStaff) {
+    const supabase = await createClient();
+    const { data: existing } = await supabase
+      .from("memberships")
+      .select("id")
+      .eq("user_id", profile.id)
+      .limit(1);
+    if (!existing || existing.length === 0) redirect("/choose-plan");
+  }
 
   return (
     <div className="min-h-screen">
