@@ -50,6 +50,12 @@ export default async function LoginPage({
         </button>
       </form>
 
+      <p className="mt-3 text-sm">
+        <Link href="/forgot-password" className="font-medium text-neutral-900 underline">
+          Forgot your password?
+        </Link>
+      </p>
+
       <p className="mt-6 text-sm text-neutral-500">
         New here?{" "}
         <Link href="/signup" className="font-medium text-neutral-900 underline">
