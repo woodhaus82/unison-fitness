@@ -1,9 +1,15 @@
 import { Tabs } from "expo-router";
 import { Text } from "react-native";
+import { colors, fonts } from "@/lib/theme";
 
 export default function TabsLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "#171717" }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: colors.brand,
+        headerTitleStyle: { fontFamily: fonts.heading, fontSize: 18 },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

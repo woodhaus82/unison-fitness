@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "rea
 import { supabase } from "@/lib/supabase";
 import { isSessionPast } from "@/lib/time";
 import { WorkoutLink } from "./WorkoutLink";
+import { colors, fonts } from "@/lib/theme";
 import type { Database } from "@/lib/types/database";
 
 type SessionRow = Database["public"]["Functions"]["list_sessions"]["Returns"][number];
@@ -72,18 +73,18 @@ export function SessionCard({ session, onChanged }: { session: SessionRow; onCha
 }
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderColor: "#e5e5e5", borderRadius: 10, padding: 14, marginBottom: 8 },
+  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   flex1: { flex: 1, paddingRight: 12 },
-  title: { fontSize: 15, fontWeight: "600", color: "#171717" },
-  meta: { fontSize: 13, color: "#737373", marginTop: 2 },
-  waitlisted: { fontSize: 13, color: "#b45309", marginTop: 2 },
-  booked: { fontSize: 13, color: "#15803d", marginTop: 2 },
-  pastText: { fontSize: 13, color: "#a3a3a3" },
-  primaryButton: { backgroundColor: "#171717", borderRadius: 8, paddingVertical: 8, paddingHorizontal: 14 },
-  waitlistButton: { backgroundColor: "#b45309" },
-  primaryButtonText: { color: "#fff", fontSize: 14, fontWeight: "600" },
-  secondaryButton: { borderWidth: 1, borderColor: "#d4d4d4", borderRadius: 8, paddingVertical: 8, paddingHorizontal: 14 },
-  secondaryButtonText: { color: "#171717", fontSize: 14, fontWeight: "600" },
+  title: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },
+  meta: { fontSize: 13, color: colors.muted, marginTop: 2, fontFamily: fonts.body },
+  waitlisted: { fontSize: 13, color: colors.warning, marginTop: 2, fontFamily: fonts.body },
+  booked: { fontSize: 13, color: colors.success, marginTop: 2, fontFamily: fonts.body },
+  pastText: { fontSize: 13, color: colors.mutedLight, fontFamily: fonts.body },
+  primaryButton: { backgroundColor: colors.brand, borderRadius: 999, paddingVertical: 9, paddingHorizontal: 16 },
+  waitlistButton: { backgroundColor: "#f59e0b" },
+  primaryButtonText: { color: "#000", fontSize: 14, fontFamily: fonts.bodySemiBold },
+  secondaryButton: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 999, paddingVertical: 9, paddingHorizontal: 16 },
+  secondaryButtonText: { color: colors.ink, fontSize: 14, fontFamily: fonts.bodySemiBold },
   workoutRow: { marginTop: 10 },
 });

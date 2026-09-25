@@ -1,6 +1,7 @@
 import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase";
+import { colors, fonts } from "@/lib/theme";
 
 // Admin/coach tools live in the web portal, not as native screens here —
 // same split Wodify itself uses (member app vs. web backend).
@@ -39,25 +40,25 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 16 },
+  container: { flex: 1, backgroundColor: colors.bg, padding: 16 },
   field: { marginBottom: 16 },
-  label: { fontSize: 13, color: "#737373" },
-  value: { fontSize: 16, color: "#171717", marginTop: 2 },
+  label: { fontSize: 13, color: colors.muted, fontFamily: fonts.body },
+  value: { fontSize: 16, color: colors.ink, marginTop: 2, fontFamily: fonts.body },
   adminButton: {
     marginTop: 8,
-    backgroundColor: "#171717",
-    borderRadius: 8,
-    paddingVertical: 12,
+    backgroundColor: colors.brand,
+    borderRadius: 999,
+    paddingVertical: 13,
     alignItems: "center",
   },
-  adminButtonText: { fontSize: 15, fontWeight: "600", color: "#fff" },
+  adminButtonText: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: "#000" },
   button: {
     marginTop: 12,
     borderWidth: 1,
-    borderColor: "#d4d4d4",
-    borderRadius: 8,
-    paddingVertical: 12,
+    borderColor: colors.borderInput,
+    borderRadius: 999,
+    paddingVertical: 13,
     alignItems: "center",
   },
-  buttonText: { fontSize: 15, fontWeight: "600", color: "#171717" },
+  buttonText: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },
 });

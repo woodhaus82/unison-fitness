@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
+import { colors, fonts } from "@/lib/theme";
 import type { Database } from "@/lib/types/database";
 
 type BookingRow = {
@@ -116,15 +117,15 @@ export default function BookingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 16, paddingBottom: 40 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#fff" },
-  empty: { color: "#737373", marginTop: 24 },
-  card: { borderWidth: 1, borderColor: "#e5e5e5", borderRadius: 10, padding: 14, marginBottom: 8 },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.bg },
+  empty: { color: colors.muted, marginTop: 24, fontFamily: fonts.body },
+  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   flex1: { flex: 1, paddingRight: 12 },
-  title: { fontSize: 15, fontWeight: "600", color: "#171717" },
-  meta: { fontSize: 13, color: "#737373", marginTop: 2 },
-  secondaryButton: { borderWidth: 1, borderColor: "#d4d4d4", borderRadius: 8, paddingVertical: 8, paddingHorizontal: 14 },
-  secondaryButtonText: { color: "#171717", fontSize: 14, fontWeight: "600" },
+  title: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },
+  meta: { fontSize: 13, color: colors.muted, marginTop: 2, fontFamily: fonts.body },
+  secondaryButton: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14 },
+  secondaryButtonText: { color: colors.ink, fontSize: 14, fontFamily: fonts.bodySemiBold },
 });

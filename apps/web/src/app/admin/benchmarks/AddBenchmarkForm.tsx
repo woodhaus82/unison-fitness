@@ -44,7 +44,7 @@ export function AddBenchmarkForm() {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="rounded-full bg-brand px-5 py-2 text-sm font-semibold text-black hover:bg-brand-hover disabled:opacity-50"
       >
         {pending ? "Adding…" : "Add benchmark"}
       </button>

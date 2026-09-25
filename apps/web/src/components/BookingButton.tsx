@@ -17,8 +17,8 @@ export function BookButton({ sessionId, full }: { sessionId: string; full: boole
         <button
           type="submit"
           disabled={pending}
-          className={`rounded-md px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 ${
-            full ? "bg-amber-600" : "bg-neutral-900"
+          className={`rounded-full px-4 py-1.5 text-sm font-semibold disabled:opacity-50 ${
+            full ? "bg-amber-500 text-black hover:bg-amber-400" : "bg-brand text-black hover:bg-brand-hover"
           }`}
         >
           {pending ? "Booking…" : full ? "Join waitlist" : "Book"}

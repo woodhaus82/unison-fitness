@@ -3,6 +3,7 @@ import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, Text, View }
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 import { BenchmarkCard } from "@/components/BenchmarkCard";
+import { colors, fonts } from "@/lib/theme";
 import type { Database } from "@/lib/types/database";
 
 type Benchmark = Database["public"]["Tables"]["benchmarks"]["Row"];
@@ -91,13 +92,13 @@ export default function PbsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 16, paddingBottom: 40 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#fff" },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.bg },
   sectionHeading: {
     fontSize: 13,
-    fontWeight: "700",
-    color: "#737373",
+    fontFamily: fonts.bodyBold,
+    color: colors.muted,
     textTransform: "uppercase",
     letterSpacing: 0.5,
     marginTop: 16,

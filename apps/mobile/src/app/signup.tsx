@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "expo-router";
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
+import { colors, fonts } from "@/lib/theme";
 
 export default function SignupScreen() {
   const [fullName, setFullName] = useState("");
@@ -78,7 +79,7 @@ export default function SignupScreen() {
       </View>
 
       <Pressable style={styles.button} onPress={handleSignup} disabled={pending}>
-        {pending ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign up</Text>}
+        {pending ? <ActivityIndicator color="#000" /> : <Text style={styles.buttonText}>Sign up</Text>}
       </Pressable>
 
       <View style={styles.footer}>
@@ -92,32 +93,33 @@ export default function SignupScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", paddingHorizontal: 24, backgroundColor: "#fff" },
-  title: { fontSize: 28, fontWeight: "600", color: "#171717" },
-  subtitle: { marginTop: 4, fontSize: 14, color: "#737373" },
+  container: { flex: 1, justifyContent: "center", paddingHorizontal: 24, backgroundColor: colors.bg },
+  title: { fontSize: 26, fontFamily: fonts.heading, color: colors.ink },
+  subtitle: { marginTop: 6, fontSize: 14, color: colors.muted, fontFamily: fonts.body },
   field: { marginTop: 20 },
-  label: { fontSize: 14, fontWeight: "500", color: "#171717", marginBottom: 6 },
+  label: { fontSize: 14, fontFamily: fonts.bodyMedium, color: colors.ink, marginBottom: 6 },
   input: {
     borderWidth: 1,
-    borderColor: "#d4d4d4",
+    borderColor: colors.borderInput,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
+    fontFamily: fonts.body,
   },
   button: {
     marginTop: 24,
-    backgroundColor: "#171717",
-    borderRadius: 8,
-    paddingVertical: 12,
+    backgroundColor: colors.brand,
+    borderRadius: 999,
+    paddingVertical: 13,
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  buttonText: { color: "#000", fontSize: 16, fontFamily: fonts.bodySemiBold },
   errorBox: { marginTop: 16, backgroundColor: "#fef2f2", borderRadius: 8, padding: 12 },
-  errorText: { color: "#b91c1c", fontSize: 14 },
+  errorText: { color: colors.danger, fontSize: 14, fontFamily: fonts.body },
   messageBox: { marginTop: 16, backgroundColor: "#f0fdf4", borderRadius: 8, padding: 12 },
-  messageText: { color: "#15803d", fontSize: 14 },
+  messageText: { color: colors.success, fontSize: 14, fontFamily: fonts.body },
   footer: { marginTop: 24, flexDirection: "row" },
-  footerText: { fontSize: 14, color: "#737373" },
-  footerLink: { fontSize: 14, color: "#171717", fontWeight: "500", textDecorationLine: "underline" },
+  footerText: { fontSize: 14, color: colors.muted, fontFamily: fonts.body },
+  footerLink: { fontSize: 14, color: colors.ink, fontFamily: fonts.bodyMedium, textDecorationLine: "underline" },
 });

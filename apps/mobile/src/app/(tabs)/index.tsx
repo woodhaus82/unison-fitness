@@ -3,6 +3,7 @@ import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, T
 import { supabase } from "@/lib/supabase";
 import { addDaysToDateString, addMonthsToDateString, startOfWeekMonday } from "@/lib/time";
 import { SessionCard } from "@/components/SessionCard";
+import { colors, fonts } from "@/lib/theme";
 import type { Database } from "@/lib/types/database";
 
 type SessionRow = Database["public"]["Functions"]["list_sessions"]["Returns"][number];
@@ -132,17 +133,17 @@ export default function ScheduleScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: 16, paddingBottom: 40 },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  weekRange: { fontSize: 20, fontWeight: "700", color: "#171717" },
-  thisWeek: { fontSize: 13, color: "#737373" },
+  weekRange: { fontSize: 19, fontFamily: fonts.heading, color: colors.ink },
+  thisWeek: { fontSize: 13, color: colors.muted, fontFamily: fonts.body },
   navRow: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 8 },
-  navLink: { fontSize: 13, fontWeight: "500", color: "#404040", textDecorationLine: "underline" },
+  navLink: { fontSize: 13, fontFamily: fonts.bodyMedium, color: colors.brand, textDecorationLine: "underline" },
   loading: { marginTop: 32 },
-  empty: { marginTop: 24, color: "#737373" },
+  empty: { marginTop: 24, color: colors.muted, fontFamily: fonts.body },
   daySection: { marginTop: 20 },
-  dayHeading: { fontSize: 13, fontWeight: "700", color: "#737373", textTransform: "uppercase", letterSpacing: 0.5 },
-  dayCount: { fontWeight: "400", textTransform: "none", color: "#a3a3a3" },
+  dayHeading: { fontSize: 13, fontFamily: fonts.bodyBold, color: colors.muted, textTransform: "uppercase", letterSpacing: 0.5 },
+  dayCount: { fontFamily: fonts.body, textTransform: "none", color: colors.mutedLight },
   dayBody: { marginTop: 10 },
 });

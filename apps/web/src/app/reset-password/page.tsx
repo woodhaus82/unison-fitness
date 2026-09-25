@@ -31,7 +31,7 @@ export default async function ResetPasswordPage({
         </label>
         <button
           type="submit"
-          className="mt-2 rounded-md bg-neutral-900 px-4 py-2 font-medium text-white"
+          className="mt-2 rounded-full bg-brand px-4 py-2.5 font-semibold text-black hover:bg-brand-hover"
         >
           Update password
         </button>

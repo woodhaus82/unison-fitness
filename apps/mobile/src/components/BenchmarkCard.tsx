@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Switch, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { formatScore } from "@/lib/pb-format";
+import { colors, fonts } from "@/lib/theme";
 import type { Database } from "@/lib/types/database";
 
 type ScoreType = Database["public"]["Tables"]["benchmarks"]["Row"]["score_type"];
@@ -129,7 +130,7 @@ export function BenchmarkCard({
 
           <View style={styles.rxRow}>
             <Text style={styles.rxLabel}>Rx</Text>
-            <Switch value={rx} onValueChange={setRx} />
+            <Switch value={rx} onValueChange={setRx} trackColor={{ true: colors.brand }} />
             <Text style={styles.rxLabel}>{rx ? "Rx" : "Scaled"}</Text>
           </View>
 
@@ -141,7 +142,7 @@ export function BenchmarkCard({
           />
 
           <Pressable style={styles.saveButton} onPress={handleSave} disabled={saving}>
-            {saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveButtonText}>Save result</Text>}
+            {saving ? <ActivityIndicator color="#000" /> : <Text style={styles.saveButtonText}>Save result</Text>}
           </Pressable>
         </View>
       )}
@@ -169,25 +170,25 @@ export function BenchmarkCard({
 }
 
 const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderColor: "#e5e5e5", borderRadius: 10, padding: 14, marginBottom: 8 },
+  card: { borderWidth: 1, borderColor: colors.border, borderRadius: 10, padding: 14, marginBottom: 8 },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   flex1: { flex: 1, paddingRight: 12 },
-  name: { fontSize: 15, fontWeight: "600", color: "#171717" },
-  description: { fontSize: 13, color: "#737373", marginTop: 2 },
-  pb: { fontSize: 13, color: "#15803d", marginTop: 4, fontWeight: "600" },
-  noPb: { fontSize: 13, color: "#a3a3a3", marginTop: 4 },
-  logButton: { borderWidth: 1, borderColor: "#d4d4d4", borderRadius: 8, paddingVertical: 8, paddingHorizontal: 12 },
-  logButtonText: { fontSize: 13, fontWeight: "600", color: "#171717" },
+  name: { fontSize: 15, fontFamily: fonts.bodySemiBold, color: colors.ink },
+  description: { fontSize: 13, color: colors.muted, marginTop: 2, fontFamily: fonts.body },
+  pb: { fontSize: 13, color: colors.success, marginTop: 4, fontFamily: fonts.bodySemiBold },
+  noPb: { fontSize: 13, color: colors.mutedLight, marginTop: 4, fontFamily: fonts.body },
+  logButton: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12 },
+  logButtonText: { fontSize: 13, fontFamily: fonts.bodySemiBold, color: colors.ink },
   form: { marginTop: 12, borderTopWidth: 1, borderTopColor: "#f0f0f0", paddingTop: 12, gap: 8 },
   row: { flexDirection: "row", gap: 8 },
-  smallInput: { borderWidth: 1, borderColor: "#d4d4d4", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, width: 70, fontSize: 15 },
-  input: { borderWidth: 1, borderColor: "#d4d4d4", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontSize: 15 },
+  smallInput: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, width: 70, fontSize: 15, fontFamily: fonts.body },
+  input: { borderWidth: 1, borderColor: colors.borderInput, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, fontSize: 15, fontFamily: fonts.body },
   rxRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  rxLabel: { fontSize: 14, color: "#404040" },
-  saveButton: { backgroundColor: "#171717", borderRadius: 8, paddingVertical: 10, alignItems: "center" },
-  saveButtonText: { color: "#fff", fontSize: 14, fontWeight: "600" },
-  historyToggle: { marginTop: 10, fontSize: 13, fontWeight: "600", color: "#404040", textDecorationLine: "underline" },
-  historyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: "#fafafa", borderRadius: 8, padding: 8, marginTop: 6 },
-  historyText: { flex: 1, fontSize: 12, color: "#404040" },
-  deleteText: { fontSize: 12, color: "#b91c1c", textDecorationLine: "underline" },
+  rxLabel: { fontSize: 14, color: colors.text, fontFamily: fonts.body },
+  saveButton: { backgroundColor: colors.brand, borderRadius: 999, paddingVertical: 10, alignItems: "center" },
+  saveButtonText: { color: "#000", fontSize: 14, fontFamily: fonts.bodySemiBold },
+  historyToggle: { marginTop: 10, fontSize: 13, fontFamily: fonts.bodySemiBold, color: colors.text, textDecorationLine: "underline" },
+  historyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: colors.bgSubtle, borderRadius: 8, padding: 8, marginTop: 6 },
+  historyText: { flex: 1, fontSize: 12, color: colors.text, fontFamily: fonts.body },
+  deleteText: { fontSize: 12, color: colors.danger, textDecorationLine: "underline" },
 });

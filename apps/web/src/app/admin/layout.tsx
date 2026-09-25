@@ -10,12 +10,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="border-b border-neutral-200">
         <div className="mx-auto flex max-w-4xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium">
-            <Link href="/admin/schedule">Schedule</Link>
-            <Link href="/admin/workouts">Workouts</Link>
-            <Link href="/admin/template">Recurring template</Link>
-            <Link href="/admin/benchmarks">Benchmarks</Link>
-            {profile.role === "admin" && <Link href="/admin/members">Members</Link>}
-            <Link href="/schedule">Member view</Link>
+            <Link href="/admin/schedule" className="hover:text-brand">Schedule</Link>
+            <Link href="/admin/workouts" className="hover:text-brand">Workouts</Link>
+            <Link href="/admin/template" className="hover:text-brand">Recurring template</Link>
+            <Link href="/admin/benchmarks" className="hover:text-brand">Benchmarks</Link>
+            {profile.role === "admin" && <Link href="/admin/members" className="hover:text-brand">Members</Link>}
+            <Link href="/schedule" className="hover:text-brand">Member view</Link>
           </nav>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
             <span className="truncate">{profile.full_name ?? profile.email}</span>

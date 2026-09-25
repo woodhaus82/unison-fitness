@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "expo-router";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
+import { colors, fonts } from "@/lib/theme";
 
 // The reset link opens in the phone's browser and completes on the web
 // app (which already has a working reset flow) rather than trying to
@@ -48,7 +49,7 @@ export default function ForgotPasswordScreen() {
       </View>
 
       <Pressable style={styles.button} onPress={handleReset} disabled={pending}>
-        {pending ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Send reset link</Text>}
+        {pending ? <ActivityIndicator color="#000" /> : <Text style={styles.buttonText}>Send reset link</Text>}
       </Pressable>
 
       <Link href="/login" style={styles.link}>
@@ -59,28 +60,29 @@ export default function ForgotPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", paddingHorizontal: 24, backgroundColor: "#fff" },
-  title: { fontSize: 28, fontWeight: "600", color: "#171717" },
-  subtitle: { marginTop: 4, fontSize: 14, color: "#737373" },
+  container: { flex: 1, justifyContent: "center", paddingHorizontal: 24, backgroundColor: colors.bg },
+  title: { fontSize: 26, fontFamily: fonts.heading, color: colors.ink },
+  subtitle: { marginTop: 6, fontSize: 14, color: colors.muted, fontFamily: fonts.body },
   field: { marginTop: 20 },
-  label: { fontSize: 14, fontWeight: "500", color: "#171717", marginBottom: 6 },
+  label: { fontSize: 14, fontFamily: fonts.bodyMedium, color: colors.ink, marginBottom: 6 },
   input: {
     borderWidth: 1,
-    borderColor: "#d4d4d4",
+    borderColor: colors.borderInput,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
+    fontFamily: fonts.body,
   },
   button: {
     marginTop: 24,
-    backgroundColor: "#171717",
-    borderRadius: 8,
-    paddingVertical: 12,
+    backgroundColor: colors.brand,
+    borderRadius: 999,
+    paddingVertical: 13,
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  buttonText: { color: "#000", fontSize: 16, fontFamily: fonts.bodySemiBold },
   messageBox: { marginTop: 16, backgroundColor: "#f0fdf4", borderRadius: 8, padding: 12 },
-  messageText: { color: "#15803d", fontSize: 14 },
-  link: { marginTop: 16, fontSize: 14, color: "#171717", fontWeight: "500", textDecorationLine: "underline" },
+  messageText: { color: colors.success, fontSize: 14, fontFamily: fonts.body },
+  link: { marginTop: 16, fontSize: 14, color: colors.ink, fontFamily: fonts.bodyMedium, textDecorationLine: "underline" },
 });
