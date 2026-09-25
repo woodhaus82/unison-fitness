@@ -79,25 +79,25 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex min-w-[900px]">
-        <div className="w-14 shrink-0" />
+    <div>
+      <div className="flex">
+        <div className="w-12 shrink-0 sm:w-14" />
         {days.map((day) => (
           <div
             key={day.toISOString()}
-            className="min-w-[120px] flex-1 border-b border-l border-neutral-800 px-2 py-2 text-xs font-medium text-neutral-400"
+            className="min-w-0 flex-1 border-b border-l border-neutral-800 px-1 py-2 text-[11px] font-medium text-neutral-400 sm:px-2 sm:text-xs"
           >
             {format(day, "EEE d MMM")}
           </div>
         ))}
       </div>
 
-      <div className="flex min-w-[900px]">
-        <div className="relative w-14 shrink-0" style={{ height: GRID_HEIGHT }}>
+      <div className="flex">
+        <div className="relative w-12 shrink-0 sm:w-14" style={{ height: GRID_HEIGHT }}>
           {HOUR_MARKS.map((h) => (
             <div
               key={h}
-              className="absolute right-2 -translate-y-1/2 text-xs font-medium text-neutral-400"
+              className="absolute right-1 -translate-y-1/2 text-[10px] font-medium text-neutral-400 sm:right-2 sm:text-xs"
               style={{ top: (h - GRID_START_MINUTES / 60) * PX_PER_HOUR }}
             >
               {String(h).padStart(2, "0")}:00
@@ -120,7 +120,7 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
           return (
             <div
               key={dateStr}
-              className="relative min-w-[120px] flex-1 border-l border-neutral-800"
+              className="relative min-w-0 flex-1 border-l border-neutral-800"
               style={{ height: GRID_HEIGHT }}
             >
               {HOUR_MARKS.map((h) => (
@@ -144,7 +144,7 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                     <Link
                       key={s.id}
                       href={`/admin/roster/${s.id}`}
-                      className="absolute overflow-hidden rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-xs hover:bg-neutral-800"
+                      className="absolute overflow-hidden rounded-md border border-neutral-800 bg-neutral-900/60 px-1 py-0.5 text-[10px] leading-tight hover:bg-neutral-800 sm:px-2 sm:py-1 sm:text-xs"
                       style={{
                         top,
                         height,
@@ -155,10 +155,10 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                       }}
                     >
                       <div className="truncate">{classType?.name ?? "Class"}</div>
-                      <div className="text-neutral-500">
+                      <div className="truncate text-neutral-500">
                         {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
                       </div>
-                      <div className={full ? "font-medium text-amber-400" : "text-neutral-400"}>
+                      <div className={`truncate ${full ? "font-medium text-amber-400" : "text-neutral-400"}`}>
                         {count.booked}/{s.capacity}
                         {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
                       </div>

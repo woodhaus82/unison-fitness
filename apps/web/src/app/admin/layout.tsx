@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen">
       <header className="border-b border-neutral-800">
-        <div className="mx-auto max-w-4xl px-6 py-4">
+        <div className="mx-auto max-w-6xl px-6 py-4">
           <Link href="/admin/schedule" className="mb-3 block w-fit">
             <Image src="/logo-white.png" alt="Unison Fitness" width={2434} height={528} className="h-6 w-auto" priority />
           </Link>
@@ -33,7 +33,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
       </header>
-      <div className="mx-auto max-w-4xl px-6 py-8">{children}</div>
+      <div className="mx-auto max-w-6xl px-6 py-8">{children}</div>
     </div>
   );
 }
