@@ -114,16 +114,29 @@ export async function deleteTimeSlot(id: string) {
   return { error: null };
 }
 
-export async function toggleGridCell(
+// A time slot holds at most one class type at a time, so selecting one
+// replaces whatever (if anything) was there before rather than adding to it.
+export async function setSlotClassType(
   dayOfWeek: number,
   startTime: string,
   endTime: string,
-  classTypeId: string,
-  ticked: boolean
+  classTypeId: string | null
 ) {
   const supabase = await createClient();
 
-  if (ticked) {
+  const { error: deleteErr } = await supabase
+    .from("class_schedule")
+    .delete()
+    .eq("day_of_week", dayOfWeek)
+    .eq("start_time", startTime)
+    .eq("end_time", endTime);
+
+  if (deleteErr) {
+    revalidatePath("/admin/template");
+    return { error: deleteErr.message };
+  }
+
+  if (classTypeId) {
     const { error } = await supabase.from("class_schedule").insert({
       class_type_id: classTypeId,
       day_of_week: dayOfWeek,
@@ -131,18 +144,11 @@ export async function toggleGridCell(
       end_time: endTime,
     });
     revalidatePath("/admin/template");
-    if (error) return { error: error.message };
-  } else {
-    const { error } = await supabase
-      .from("class_schedule")
-      .delete()
-      .eq("class_type_id", classTypeId)
-      .eq("day_of_week", dayOfWeek)
-      .eq("start_time", startTime)
-      .eq("end_time", endTime);
-    revalidatePath("/admin/template");
+    revalidatePath("/schedule");
     if (error) return { error: error.message };
   }
 
+  revalidatePath("/admin/template");
+  revalidatePath("/schedule");
   return { error: null };
 }

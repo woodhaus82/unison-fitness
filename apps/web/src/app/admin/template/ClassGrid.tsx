@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { TimeSlotRow } from "./TimeSlotRow";
-import { GridCheckbox } from "./GridCheckbox";
+import { GridRowCells } from "./GridRowCells";
 import { AddTimeSlotForm } from "./AddTimeSlotForm";
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -27,9 +27,12 @@ export async function ClassGrid() {
     supabase.from("class_schedule").select("class_type_id, day_of_week, start_time, end_time"),
   ]);
 
-  const ticked = new Set(
-    (scheduleRows ?? []).map((r) => `${r.day_of_week}|${r.start_time}|${r.end_time}|${r.class_type_id}`)
-  );
+  // At most one class type per (day, time) slot; if legacy data ever has
+  // more than one, the last one wins for display purposes.
+  const selectedByCell = new Map<string, string>();
+  for (const r of scheduleRows ?? []) {
+    selectedByCell.set(`${r.day_of_week}|${r.start_time}|${r.end_time}`, r.class_type_id);
+  }
 
   const slotsByDay = new Map<number, NonNullable<typeof timeSlots>>();
   for (const slot of timeSlots ?? []) {
@@ -53,6 +56,7 @@ export async function ClassGrid() {
                 <thead>
                   <tr className="text-xs text-neutral-500">
                     <th className="py-1 pr-3 font-medium">Time</th>
+                    <th className="px-2 py-1 text-center font-medium">—</th>
                     {(classTypes ?? []).map((ct) => (
                       <th key={ct.id} className="px-2 py-1 text-center font-medium">
                         {ct.name}
@@ -64,17 +68,13 @@ export async function ClassGrid() {
                 <tbody>
                   {slots.map((slot) => (
                     <TimeSlotRow key={slot.id} id={slot.id} initialStart={slot.start_time} initialEnd={slot.end_time}>
-                      {(classTypes ?? []).map((ct) => (
-                        <td key={ct.id} className="px-2 py-1 text-center">
-                          <GridCheckbox
-                            dayOfWeek={day}
-                            startTime={slot.start_time}
-                            endTime={slot.end_time}
-                            classTypeId={ct.id}
-                            initialChecked={ticked.has(`${day}|${slot.start_time}|${slot.end_time}|${ct.id}`)}
-                          />
-                        </td>
-                      ))}
+                      <GridRowCells
+                        dayOfWeek={day}
+                        startTime={slot.start_time}
+                        endTime={slot.end_time}
+                        classTypes={classTypes ?? []}
+                        initialSelected={selectedByCell.get(`${day}|${slot.start_time}|${slot.end_time}`) ?? null}
+                      />
                     </TimeSlotRow>
                   ))}
                 </tbody>
