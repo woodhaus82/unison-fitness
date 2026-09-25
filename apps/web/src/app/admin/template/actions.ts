@@ -23,6 +23,32 @@ export async function createClassType(formData: FormData) {
   return { error: null };
 }
 
+export async function updateClassType(
+  id: string,
+  fields: { name: string; default_capacity: number; color: string | null }
+) {
+  const supabase = await createClient();
+
+  if (!fields.name.trim()) return { error: "Name is required" };
+  if (!Number.isFinite(fields.default_capacity) || fields.default_capacity <= 0) {
+    return { error: "Capacity must be a positive number" };
+  }
+
+  const { error } = await supabase
+    .from("class_types")
+    .update({
+      name: fields.name.trim(),
+      default_capacity: fields.default_capacity,
+      color: fields.color || null,
+    })
+    .eq("id", id);
+
+  revalidatePath("/admin/template");
+  revalidatePath("/schedule");
+  if (error) return { error: error.message };
+  return { error: null };
+}
+
 export async function createTimeSlot(formData: FormData) {
   const supabase = await createClient();
 
