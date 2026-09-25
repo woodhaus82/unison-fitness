@@ -304,6 +304,10 @@ export interface Database {
         Args: Record<string, never>;
         Returns: Database["public"]["Tables"]["bookings"]["Row"][];
       };
+      cancel_session: {
+        Args: { p_session_id: string };
+        Returns: undefined;
+      };
       list_sessions: {
         Args: { p_from: string; p_to: string };
         Returns: {

@@ -2,6 +2,7 @@ import { format, parseISO } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { CheckInButton } from "./CheckInButton";
 import { WodEditor } from "./WodEditor";
+import { CancelSessionButton } from "./CancelSessionButton";
 
 const STATUS_LABEL: Record<string, string> = {
   booked: "Booked",
@@ -39,14 +40,21 @@ export default async function RosterPage({
 
   const classType = Array.isArray(session.class_types) ? session.class_types[0] : session.class_types;
 
+  const activeBookingCount = (bookings ?? []).filter((b) => b.status === "booked" || b.status === "waitlisted").length;
+
   return (
     <div>
-      <h1 className="text-2xl font-semibold">
-        {classType?.name ?? "Class"} · {format(parseISO(session.session_date), "EEEE d MMMM")}
-      </h1>
-      <p className="mt-1 text-sm text-neutral-500">
-        {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} · Capacity {session.capacity}
-      </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">
+            {classType?.name ?? "Class"} · {format(parseISO(session.session_date), "EEEE d MMMM")}
+          </h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} · Capacity {session.capacity}
+          </p>
+        </div>
+        <CancelSessionButton sessionId={sessionId} bookingCount={activeBookingCount} />
+      </div>
 
       <WodEditor sessionId={sessionId} initialWod={session.wod} />
 
