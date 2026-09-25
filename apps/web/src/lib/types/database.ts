@@ -113,6 +113,7 @@ export interface Database {
           coach_id: string | null;
           location: string | null;
           status: SessionStatus;
+          wod: string | null;
           created_at: string;
         };
         Insert: Partial<Database["public"]["Tables"]["class_sessions"]["Row"]> & {
@@ -318,6 +319,7 @@ export interface Database {
           coach_name: string | null;
           location: string | null;
           status: SessionStatus;
+          wod: string | null;
           booked_count: number;
           waitlist_count: number;
           my_booking_id: string | null;

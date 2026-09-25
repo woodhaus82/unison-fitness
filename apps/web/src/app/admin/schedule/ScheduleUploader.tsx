@@ -75,7 +75,7 @@ export function ScheduleUploader() {
           </button>
         </div>
         <p className="text-xs text-neutral-500">
-          Columns: date (YYYY-MM-DD), start_time, end_time, class_type, capacity (optional), coach_email (optional), location (optional).
+          Columns: date (YYYY-MM-DD), start_time, end_time, class_type, capacity (optional), coach_email (optional), location (optional), wod (optional).
         </p>
       </form>
 

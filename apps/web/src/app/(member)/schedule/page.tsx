@@ -40,33 +40,38 @@ export default async function SchedulePage() {
               {daySessions!.map((s) => {
                 const full = s.booked_count >= s.capacity;
                 return (
-                  <li
-                    key={s.id}
-                    className="flex items-center justify-between rounded-lg border border-neutral-200 px-4 py-3"
-                  >
-                    <div>
-                      <p className="font-medium">
-                        {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} · {s.class_type_name}
-                      </p>
-                      <p className="text-sm text-neutral-500">
-                        {s.coach_name ? `${s.coach_name} · ` : ""}
-                        {s.booked_count}/{s.capacity} booked
-                        {s.waitlist_count > 0 ? ` · ${s.waitlist_count} waitlisted` : ""}
-                      </p>
-                      {s.my_booking_status === "waitlisted" && (
-                        <p className="text-sm text-amber-600">
-                          You&apos;re #{s.my_waitlist_position} on the waitlist
+                  <li key={s.id} className="rounded-lg border border-neutral-200 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">
+                          {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)} · {s.class_type_name}
                         </p>
-                      )}
-                      {s.my_booking_status === "booked" && (
-                        <p className="text-sm text-green-700">You&apos;re booked in</p>
+                        <p className="text-sm text-neutral-500">
+                          {s.coach_name ? `${s.coach_name} · ` : ""}
+                          {s.booked_count}/{s.capacity} booked
+                          {s.waitlist_count > 0 ? ` · ${s.waitlist_count} waitlisted` : ""}
+                        </p>
+                        {s.my_booking_status === "waitlisted" && (
+                          <p className="text-sm text-amber-600">
+                            You&apos;re #{s.my_waitlist_position} on the waitlist
+                          </p>
+                        )}
+                        {s.my_booking_status === "booked" && (
+                          <p className="text-sm text-green-700">You&apos;re booked in</p>
+                        )}
+                      </div>
+
+                      {s.my_booking_id ? (
+                        <CancelButton bookingId={s.my_booking_id} />
+                      ) : (
+                        <BookButton sessionId={s.id} full={full} />
                       )}
                     </div>
 
-                    {s.my_booking_id ? (
-                      <CancelButton bookingId={s.my_booking_id} />
-                    ) : (
-                      <BookButton sessionId={s.id} full={full} />
+                    {s.wod && (
+                      <p className="mt-2 whitespace-pre-wrap rounded-md bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+                        {s.wod}
+                      </p>
                     )}
                   </li>
                 );

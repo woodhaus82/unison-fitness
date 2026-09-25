@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { CheckInButton } from "./CheckInButton";
+import { WodEditor } from "./WodEditor";
 
 const STATUS_LABEL: Record<string, string> = {
   booked: "Booked",
@@ -21,7 +22,7 @@ export default async function RosterPage({
 
   const { data: session } = await supabase
     .from("class_sessions")
-    .select("id, session_date, start_time, end_time, capacity, class_types(name)")
+    .select("id, session_date, start_time, end_time, capacity, wod, class_types(name)")
     .eq("id", sessionId)
     .single();
 
@@ -46,6 +47,8 @@ export default async function RosterPage({
       <p className="mt-1 text-sm text-neutral-500">
         {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} · Capacity {session.capacity}
       </p>
+
+      <WodEditor sessionId={sessionId} initialWod={session.wod} />
 
       <ul className="mt-8 flex flex-col gap-2">
         {(bookings ?? []).map((b) => {

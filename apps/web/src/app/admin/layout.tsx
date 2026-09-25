@@ -11,6 +11,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <nav className="flex items-center gap-6 text-sm font-medium">
             <Link href="/admin/schedule">Schedule</Link>
+            <Link href="/admin/template">Recurring template</Link>
             <Link href="/schedule">Member view</Link>
           </nav>
           <div className="flex items-center gap-4 text-sm text-neutral-500">

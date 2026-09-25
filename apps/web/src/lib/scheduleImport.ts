@@ -10,6 +10,7 @@ import { z } from "zod";
 //   capacity     optional, falls back to the class type's default
 //   coach_email  optional, must match an existing profile's email
 //   location     optional
+//   wod          optional, the workout/programming text shown to members
 
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -21,6 +22,7 @@ const rowSchema = z.object({
   capacity: z.coerce.number().int().positive().optional(),
   coach_email: z.string().email().optional().or(z.literal("")),
   location: z.string().optional(),
+  wod: z.string().optional(),
 });
 
 export type ScheduleRow = z.infer<typeof rowSchema>;

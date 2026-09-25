@@ -135,6 +135,23 @@ export async function POST(request: NextRequest) {
     .from("class_sessions")
     .upsert(sessionsToUpsert, { onConflict: "class_type_id,session_date,start_time" });
 
+  // Applied as a separate pass, one row at a time, so rows that don't
+  // specify a wod never overwrite an existing one set via the admin UI —
+  // a single batched upsert can't safely express "leave this column alone
+  // for some rows but set it for others."
+  if (!upsertErr) {
+    for (const row of rows) {
+      if (!row.wod) continue;
+      const classType = typeByName.get(row.class_type.toLowerCase())!;
+      await supabase
+        .from("class_sessions")
+        .update({ wod: row.wod })
+        .eq("class_type_id", classType.id)
+        .eq("session_date", row.date)
+        .eq("start_time", row.start_time);
+    }
+  }
+
   await supabase.from("schedule_uploads").insert({
     uploaded_by: user.id,
     source_type: sourceType,
