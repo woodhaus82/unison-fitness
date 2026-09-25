@@ -1,14 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { startOfWeek, formatISO } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 
-export async function generateThisWeek() {
+// weekStartIso must be a Monday (YYYY-MM-DD), matching the calendar's
+// week-start convention and generate_sessions_from_schedule()'s day offsets.
+export async function generateWeek(weekStartIso: string) {
   const supabase = await createClient();
-  const weekStart = startOfWeek(new Date(), { weekStartsOn: 0 });
   const { data, error } = await supabase.rpc("generate_sessions_from_schedule", {
-    p_week_start: formatISO(weekStart, { representation: "date" }),
+    p_week_start: weekStartIso,
   });
   revalidatePath("/admin/schedule");
   revalidatePath("/schedule");
