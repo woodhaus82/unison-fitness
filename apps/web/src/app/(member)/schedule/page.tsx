@@ -67,10 +67,13 @@ export default async function SchedulePage({
 
       <div className="mt-8 flex flex-col gap-8">
         {[...byDay.entries()].map(([date, daySessions]) => (
-          <section key={date}>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
+          <details key={date}>
+            <summary className="cursor-pointer text-sm font-semibold uppercase tracking-wide text-neutral-500 marker:text-neutral-400">
               {format(parseISO(date), "EEEE d MMMM")}
-            </h2>
+              <span className="ml-2 text-xs font-normal normal-case text-neutral-400">
+                ({daySessions!.length} class{daySessions!.length === 1 ? "" : "es"})
+              </span>
+            </summary>
             <ul className="mt-3 flex flex-col gap-2">
               {daySessions!.map((s) => {
                 const full = s.booked_count >= s.capacity;
@@ -110,7 +113,7 @@ export default async function SchedulePage({
                 );
               })}
             </ul>
-          </section>
+          </details>
         ))}
 
         {byDay.size === 0 && <p className="text-neutral-500">No classes scheduled this week.</p>}
