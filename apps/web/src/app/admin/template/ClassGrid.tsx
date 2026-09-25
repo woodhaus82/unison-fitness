@@ -17,21 +17,25 @@ const DAY_LABELS: Record<number, string> = {
 export async function ClassGrid() {
   const supabase = await createClient();
 
-  const [{ data: timeSlots }, { data: classTypes }, { data: scheduleRows }] = await Promise.all([
+  const [{ data: timeSlots }, { data: classTypes }, { data: scheduleRows }, { data: coaches }] = await Promise.all([
     supabase
       .from("time_slots")
       .select("id, day_of_week, start_time, end_time, sort_order")
       .order("day_of_week")
       .order("sort_order"),
     supabase.from("class_types").select("id, name").order("name"),
-    supabase.from("class_schedule").select("class_type_id, day_of_week, start_time, end_time"),
+    supabase.from("class_schedule").select("class_type_id, day_of_week, start_time, end_time, coach_id"),
+    supabase.from("profiles").select("id, full_name, email").in("role", ["admin", "coach"]).order("full_name"),
   ]);
 
   // At most one class type per (day, time) slot; if legacy data ever has
   // more than one, the last one wins for display purposes.
   const selectedByCell = new Map<string, string>();
+  const coachByCell = new Map<string, string | null>();
   for (const r of scheduleRows ?? []) {
-    selectedByCell.set(`${r.day_of_week}|${r.start_time}|${r.end_time}`, r.class_type_id);
+    const key = `${r.day_of_week}|${r.start_time}|${r.end_time}`;
+    selectedByCell.set(key, r.class_type_id);
+    coachByCell.set(key, r.coach_id);
   }
 
   const slotsByDay = new Map<number, NonNullable<typeof timeSlots>>();
@@ -62,6 +66,7 @@ export async function ClassGrid() {
                         {ct.name}
                       </th>
                     ))}
+                    <th className="px-2 py-1 text-left font-medium">Coach</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -73,7 +78,9 @@ export async function ClassGrid() {
                         startTime={slot.start_time}
                         endTime={slot.end_time}
                         classTypes={classTypes ?? []}
+                        coaches={coaches ?? []}
                         initialSelected={selectedByCell.get(`${day}|${slot.start_time}|${slot.end_time}`) ?? null}
+                        initialCoachId={coachByCell.get(`${day}|${slot.start_time}|${slot.end_time}`) ?? null}
                       />
                     </TimeSlotRow>
                   ))}

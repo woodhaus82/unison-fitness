@@ -148,7 +148,8 @@ export async function setSlotClassType(
   dayOfWeek: number,
   startTime: string,
   endTime: string,
-  classTypeId: string | null
+  classTypeId: string | null,
+  coachId: string | null = null
 ) {
   const supabase = await createClient();
 
@@ -170,6 +171,7 @@ export async function setSlotClassType(
       day_of_week: dayOfWeek,
       start_time: startTime,
       end_time: endTime,
+      coach_id: coachId,
     });
     revalidatePath("/admin/template");
     revalidatePath("/schedule");
@@ -178,5 +180,41 @@ export async function setSlotClassType(
 
   revalidatePath("/admin/template");
   revalidatePath("/schedule");
+  return { error: null };
+}
+
+// Updates just the coach on an existing slot, and propagates it onto
+// upcoming already-generated sessions too (same reasoning as capacity:
+// sessions snapshot coach_id at generation time, so it wouldn't otherwise
+// update retroactively).
+export async function setSlotCoach(dayOfWeek: number, startTime: string, endTime: string, coachId: string | null) {
+  const supabase = await createClient();
+
+  const { data: scheduleRow, error: fetchErr } = await supabase
+    .from("class_schedule")
+    .select("id")
+    .eq("day_of_week", dayOfWeek)
+    .eq("start_time", startTime)
+    .eq("end_time", endTime)
+    .maybeSingle();
+
+  if (fetchErr) return { error: fetchErr.message };
+  if (!scheduleRow) return { error: "Pick a class type for this slot first" };
+
+  const { error } = await supabase.from("class_schedule").update({ coach_id: coachId }).eq("id", scheduleRow.id);
+
+  if (!error) {
+    await supabase
+      .from("class_sessions")
+      .update({ coach_id: coachId })
+      .eq("schedule_id", scheduleRow.id)
+      .eq("status", "scheduled")
+      .gte("session_date", new Date().toISOString().slice(0, 10));
+  }
+
+  revalidatePath("/admin/template");
+  revalidatePath("/schedule");
+  revalidatePath("/admin/schedule");
+  if (error) return { error: error.message };
   return { error: null };
 }
