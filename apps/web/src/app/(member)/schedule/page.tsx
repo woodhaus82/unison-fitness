@@ -3,6 +3,7 @@ import { addDays, addMonths, format, parseISO, startOfWeek } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
 import { BookButton, CancelButton } from "@/components/BookingButton";
+import { WorkoutLink } from "@/components/WorkoutLink";
 
 export default async function SchedulePage({
   searchParams,
@@ -102,11 +103,9 @@ export default async function SchedulePage({
                       )}
                     </div>
 
-                    {s.wod && (
-                      <p className="mt-2 whitespace-pre-wrap rounded-md bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
-                        {s.wod}
-                      </p>
-                    )}
+                    <div className="mt-2">
+                      <WorkoutLink wod={s.wod} />
+                    </div>
                   </li>
                 );
               })}
