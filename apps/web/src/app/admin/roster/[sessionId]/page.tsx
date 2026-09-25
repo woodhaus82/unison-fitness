@@ -40,7 +40,9 @@ export default async function RosterPage({
 
   const classType = Array.isArray(session.class_types) ? session.class_types[0] : session.class_types;
 
-  const activeBookingCount = (bookings ?? []).filter((b) => b.status === "booked" || b.status === "waitlisted").length;
+  const bookedCount = (bookings ?? []).filter((b) => b.status === "booked").length;
+  const waitlistCount = (bookings ?? []).filter((b) => b.status === "waitlisted").length;
+  const activeBookingCount = bookedCount + waitlistCount;
 
   return (
     <div>
@@ -50,7 +52,11 @@ export default async function RosterPage({
             {classType?.name ?? "Class"} · {format(parseISO(session.session_date), "EEEE d MMMM")}
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} · Capacity {session.capacity}
+            {session.start_time.slice(0, 5)}–{session.end_time.slice(0, 5)} ·{" "}
+            <span className={bookedCount >= session.capacity ? "font-medium text-amber-600" : undefined}>
+              {bookedCount}/{session.capacity} booked
+            </span>
+            {waitlistCount > 0 ? ` · ${waitlistCount} waitlisted` : ""}
           </p>
         </div>
         <CancelSessionButton sessionId={sessionId} bookingCount={activeBookingCount} />

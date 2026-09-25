@@ -17,7 +17,7 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
 
   const { data: sessions } = await supabase
     .from("class_sessions")
-    .select("id, session_date, start_time, end_time, class_types(name, color)")
+    .select("id, session_date, start_time, end_time, capacity, class_types(name, color)")
     .gte("session_date", weekStartStr)
     .lte("session_date", weekEndStr)
     .eq("status", "scheduled")
@@ -29,6 +29,20 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
         Nothing scheduled this week — add slots to the recurring template, or import a spreadsheet, to populate it.
       </p>
     );
+  }
+
+  const { data: bookingRows } = await supabase
+    .from("bookings")
+    .select("session_id, status")
+    .in("session_id", sessions.map((s) => s.id))
+    .in("status", ["booked", "waitlisted"]);
+
+  const counts = new Map<string, { booked: number; waitlisted: number }>();
+  for (const b of bookingRows ?? []) {
+    const entry = counts.get(b.session_id) ?? { booked: 0, waitlisted: 0 };
+    if (b.status === "booked") entry.booked += 1;
+    else entry.waitlisted += 1;
+    counts.set(b.session_id, entry);
   }
 
   // Group by "date|start_time" so multiple classes at the same slot (rare,
@@ -74,6 +88,8 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                     <div className="flex flex-col gap-1">
                       {cellSessions.map((s) => {
                         const classType = Array.isArray(s.class_types) ? s.class_types[0] : s.class_types;
+                        const count = counts.get(s.id) ?? { booked: 0, waitlisted: 0 };
+                        const full = count.booked >= s.capacity;
                         return (
                           <Link
                             key={s.id}
@@ -81,7 +97,11 @@ export async function WeeklyCalendar({ weekStart }: { weekStart: Date }) {
                             className="block rounded-md border border-neutral-200 px-2 py-1 text-xs hover:bg-neutral-50"
                             style={classType?.color ? { borderLeftColor: classType.color, borderLeftWidth: 3 } : undefined}
                           >
-                            {classType?.name ?? "Class"}
+                            <div>{classType?.name ?? "Class"}</div>
+                            <div className={full ? "font-medium text-amber-600" : "text-neutral-500"}>
+                              {count.booked}/{s.capacity}
+                              {count.waitlisted > 0 ? ` (+${count.waitlisted} waiting)` : ""}
+                            </div>
                           </Link>
                         );
                       })}
