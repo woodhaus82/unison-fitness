@@ -48,8 +48,9 @@ export async function updateClassType(
   if (!error && before && before.default_capacity !== fields.default_capacity) {
     // Sessions snapshot their capacity from the default at generation
     // time, so a later default_capacity change doesn't retroactively
-    // apply on its own. Propagate it to upcoming sessions that aren't
-    // using an explicit per-slot capacity override.
+    // apply on its own. Propagate it to every scheduled session (past
+    // included, so displayed history stays consistent) that isn't using
+    // an explicit per-slot capacity override.
     const { data: overridden } = await supabase
       .from("class_schedule")
       .select("id")
@@ -60,8 +61,7 @@ export async function updateClassType(
       .from("class_sessions")
       .update({ capacity: fields.default_capacity })
       .eq("class_type_id", id)
-      .eq("status", "scheduled")
-      .gte("session_date", new Date().toISOString().slice(0, 10));
+      .eq("status", "scheduled");
 
     const overriddenIds = (overridden ?? []).map((s) => s.id);
     if (overriddenIds.length > 0) {
@@ -184,7 +184,7 @@ export async function setSlotClassType(
 }
 
 // Updates just the coach on an existing slot, and propagates it onto
-// upcoming already-generated sessions too (same reasoning as capacity:
+// already-generated sessions too, past and future (same reasoning as capacity:
 // sessions snapshot coach_id at generation time, so it wouldn't otherwise
 // update retroactively).
 export async function setSlotCoach(dayOfWeek: number, startTime: string, endTime: string, coachId: string | null) {
@@ -208,8 +208,7 @@ export async function setSlotCoach(dayOfWeek: number, startTime: string, endTime
       .from("class_sessions")
       .update({ coach_id: coachId })
       .eq("schedule_id", scheduleRow.id)
-      .eq("status", "scheduled")
-      .gte("session_date", new Date().toISOString().slice(0, 10));
+      .eq("status", "scheduled");
   }
 
   revalidatePath("/admin/template");

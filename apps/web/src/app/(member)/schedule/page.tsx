@@ -77,6 +77,7 @@ export default async function SchedulePage({
             <ul className="mt-3 flex flex-col gap-2">
               {daySessions!.map((s) => {
                 const full = s.booked_count >= s.capacity;
+                const isPast = new Date(`${s.session_date}T${s.start_time}`) < new Date();
                 return (
                   <li key={s.id} className="rounded-lg border border-neutral-200 px-4 py-3">
                     <div className="flex items-center justify-between">
@@ -99,7 +100,9 @@ export default async function SchedulePage({
                         )}
                       </div>
 
-                      {s.my_booking_id ? (
+                      {isPast ? (
+                        <span className="text-sm text-neutral-400">Class has passed</span>
+                      ) : s.my_booking_id ? (
                         <CancelButton bookingId={s.my_booking_id} />
                       ) : (
                         <BookButton sessionId={s.id} full={full} />
