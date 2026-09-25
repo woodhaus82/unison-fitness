@@ -17,7 +17,7 @@ insert into class_schedule (class_type_id, day_of_week, start_time, end_time, ca
   ('22222222-2222-2222-2222-222222222222', 2, '18:00', '19:00', 8, 'Main Floor'),
   ('33333333-3333-3333-3333-333333333333', 6, '09:00', '11:00', 10, 'Main Floor');
 
-insert into membership_plans (name, description, monthly_class_credits, price_cents) values
-  ('Unlimited', 'Unlimited classes per month', null, 12000),
-  ('8 Classes / Month', 'Entry-level plan', 8, 7500),
-  ('Drop-in', 'Single class pass', 1, 1500);
+insert into membership_plans (name, description, type, credits_granted, duration_days, price_cents) values
+  ('Monthly Unlimited', 'Unlimited classes, billed monthly', 'monthly_unlimited', null, null, 9400),
+  ('10 Session Pack', '10 class credits, never expire', 'session_pack', 10, null, 9000),
+  ('14 Day Trial', 'Unlimited access for 14 days, one-off', 'trial', null, 14, 1000);

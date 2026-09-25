@@ -16,6 +16,7 @@ export type BookingStatus =
   | "no_show";
 export type SessionStatus = "scheduled" | "cancelled";
 export type MembershipStatus = "active" | "paused" | "cancelled" | "expired";
+export type MembershipPlanType = "monthly_unlimited" | "session_pack" | "trial";
 export type UploadSource = "csv" | "xlsx" | "google_sheets";
 export type UploadStatus = "processing" | "completed" | "failed";
 export type NotificationType =
@@ -224,12 +225,16 @@ export interface Database {
           id: string;
           name: string;
           description: string | null;
-          monthly_class_credits: number | null;
+          type: MembershipPlanType;
+          credits_granted: number | null;
+          duration_days: number | null;
+          stripe_price_id: string | null;
           price_cents: number | null;
           active: boolean;
         };
         Insert: Partial<Database["public"]["Tables"]["membership_plans"]["Row"]> & {
           name: string;
+          type: MembershipPlanType;
         };
         Update: Partial<Database["public"]["Tables"]["membership_plans"]["Row"]>;
         Relationships: [];
@@ -243,6 +248,10 @@ export interface Database {
           start_date: string;
           end_date: string | null;
           credits_remaining: number | null;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          stripe_payment_intent_id: string | null;
+          is_comp: boolean;
           created_at: string;
         };
         Insert: Partial<Database["public"]["Tables"]["memberships"]["Row"]> & {
@@ -273,6 +282,7 @@ export interface Database {
           user_id: string;
           status: BookingStatus;
           waitlist_position: number | null;
+          membership_id: string | null;
           booked_at: string;
           cancelled_at: string | null;
           checked_in_at: string | null;
@@ -295,6 +305,13 @@ export interface Database {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "bookings_membership_id_fkey";
+            columns: ["membership_id"];
+            isOneToOne: false;
+            referencedRelation: "memberships";
             referencedColumns: ["id"];
           },
         ];
