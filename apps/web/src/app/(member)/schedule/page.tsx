@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
 import { BookButton, CancelButton } from "@/components/BookingButton";
 import { WorkoutLink } from "@/components/WorkoutLink";
+import { isSessionPast } from "@/lib/time";
 
 export default async function SchedulePage({
   searchParams,
@@ -77,7 +78,7 @@ export default async function SchedulePage({
             <ul className="mt-3 flex flex-col gap-2">
               {daySessions!.map((s) => {
                 const full = s.booked_count >= s.capacity;
-                const isPast = new Date(`${s.session_date}T${s.start_time}`) < new Date();
+                const isPast = isSessionPast(s.session_date, s.start_time);
                 return (
                   <li key={s.id} className="rounded-lg border border-neutral-200 px-4 py-3">
                     <div className="flex items-center justify-between">
