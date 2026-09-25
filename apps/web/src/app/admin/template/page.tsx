@@ -17,8 +17,8 @@ export default async function TemplatePage() {
       <section>
         <h2 className="text-lg font-semibold">Class types</h2>
         <p className="mt-1 text-sm text-neutral-500">
-          Click a name, capacity or colour to edit it. Capacity changes only apply to sessions generated after the
-          change — sessions already on the schedule keep the capacity they were created with.
+          Click a name, capacity or colour to edit it. Capacity changes apply immediately to upcoming sessions too
+          (unless a specific time slot has its own capacity override).
         </p>
         <div className="mt-4">
           <ClassTypeList />

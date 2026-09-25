@@ -34,6 +34,8 @@ export async function updateClassType(
     return { error: "Capacity must be a positive number" };
   }
 
+  const { data: before } = await supabase.from("class_types").select("default_capacity").eq("id", id).single();
+
   const { error } = await supabase
     .from("class_types")
     .update({
@@ -42,6 +44,32 @@ export async function updateClassType(
       color: fields.color || null,
     })
     .eq("id", id);
+
+  if (!error && before && before.default_capacity !== fields.default_capacity) {
+    // Sessions snapshot their capacity from the default at generation
+    // time, so a later default_capacity change doesn't retroactively
+    // apply on its own. Propagate it to upcoming sessions that aren't
+    // using an explicit per-slot capacity override.
+    const { data: overridden } = await supabase
+      .from("class_schedule")
+      .select("id")
+      .eq("class_type_id", id)
+      .not("capacity", "is", null);
+
+    let query = supabase
+      .from("class_sessions")
+      .update({ capacity: fields.default_capacity })
+      .eq("class_type_id", id)
+      .eq("status", "scheduled")
+      .gte("session_date", new Date().toISOString().slice(0, 10));
+
+    const overriddenIds = (overridden ?? []).map((s) => s.id);
+    if (overriddenIds.length > 0) {
+      query = query.not("schedule_id", "in", `(${overriddenIds.join(",")})`);
+    }
+
+    await query;
+  }
 
   revalidatePath("/admin/template");
   revalidatePath("/schedule");
