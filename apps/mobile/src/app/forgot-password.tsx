@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "expo-router";
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { colors, fonts } from "@/lib/theme";
+
+const LOGO_RATIO = 2434 / 528;
+const LOGO_HEIGHT = 32;
 
 // The reset link opens in the phone's browser and completes on the web
 // app (which already has a working reset flow) rather than trying to
@@ -27,6 +30,11 @@ export default function ForgotPasswordScreen() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../../assets/logo-white.png")}
+        resizeMode="contain"
+        style={styles.logo}
+      />
       <Text style={styles.title}>Reset your password</Text>
       <Text style={styles.subtitle}>We&apos;ll email you a link to set a new one.</Text>
 
@@ -61,6 +69,7 @@ export default function ForgotPasswordScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", paddingHorizontal: 24, backgroundColor: colors.bg },
+  logo: { height: LOGO_HEIGHT, width: LOGO_HEIGHT * LOGO_RATIO, marginBottom: 24 },
   title: { fontSize: 26, fontFamily: fonts.heading, color: colors.ink },
   subtitle: { marginTop: 6, fontSize: 14, color: colors.muted, fontFamily: fonts.body },
   field: { marginTop: 20 },

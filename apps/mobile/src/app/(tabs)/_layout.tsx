@@ -1,6 +1,21 @@
 import { Tabs } from "expo-router";
-import { Text } from "react-native";
+import { Image, Text } from "react-native";
 import { colors, fonts } from "@/lib/theme";
+
+// Intrinsic size of assets/logo-white.png — used to keep the header mark's
+// aspect ratio correct at a fixed display height.
+const LOGO_RATIO = 2434 / 528;
+const LOGO_HEIGHT = 24;
+
+function HeaderLogo() {
+  return (
+    <Image
+      source={require("../../../assets/logo-white.png")}
+      resizeMode="contain"
+      style={{ height: LOGO_HEIGHT, width: LOGO_HEIGHT * LOGO_RATIO }}
+    />
+  );
+}
 
 export default function TabsLayout() {
   return (
@@ -12,13 +27,14 @@ export default function TabsLayout() {
         headerStyle: { backgroundColor: colors.bg },
         headerTintColor: colors.ink,
         headerTitleStyle: { fontFamily: fonts.heading, fontSize: 18, color: colors.ink },
+        headerTitle: () => <HeaderLogo />,
+        headerTitleAlign: "center",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Schedule",
-          headerTitle: "Schedule",
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>📅</Text>,
         }}
       />
@@ -26,7 +42,6 @@ export default function TabsLayout() {
         name="bookings"
         options={{
           title: "My Bookings",
-          headerTitle: "My Bookings",
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>✅</Text>,
         }}
       />
@@ -34,7 +49,6 @@ export default function TabsLayout() {
         name="pbs"
         options={{
           title: "PBs",
-          headerTitle: "PBs",
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>🏆</Text>,
         }}
       />
@@ -42,7 +56,6 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: "Profile",
-          headerTitle: "Profile",
           tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>👤</Text>,
         }}
       />

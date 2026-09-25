@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { requireProfile } from "@/lib/auth";
 import { updatePassword } from "./actions";
 
@@ -11,6 +12,7 @@ export default async function ResetPasswordPage({
 
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6 py-12">
+      <Image src="/logo-white.png" alt="Unison Fitness" width={2434} height={528} className="mb-6 h-9 w-auto" priority />
       <h1 className="text-2xl font-semibold">Set a new password</h1>
 
       {error && (
