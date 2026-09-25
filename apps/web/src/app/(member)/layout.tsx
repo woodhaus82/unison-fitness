@@ -13,6 +13,7 @@ export default async function MemberLayout({ children }: { children: React.React
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium">
             <Link href="/schedule">Schedule</Link>
             <Link href="/bookings">My bookings</Link>
+            <Link href="/pbs">PBs</Link>
             {isStaff && <Link href="/admin/schedule">Admin</Link>}
           </nav>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">

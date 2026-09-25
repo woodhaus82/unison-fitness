@@ -21,6 +21,14 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="pbs"
+        options={{
+          title: "PBs",
+          headerTitle: "PBs",
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>🏆</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",

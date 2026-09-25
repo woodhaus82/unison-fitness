@@ -25,6 +25,8 @@ export type NotificationType =
   | "late_cancellation"
   | "missed_attendance"
   | "class_cancelled";
+export type BenchmarkCategory = "wod" | "lift";
+export type BenchmarkScoreType = "time" | "reps" | "weight";
 
 export interface Database {
   __InternalSupabase: {
@@ -164,6 +166,58 @@ export interface Database {
         };
         Update: Partial<Database["public"]["Tables"]["time_slots"]["Row"]>;
         Relationships: [];
+      };
+      benchmarks: {
+        Row: {
+          id: string;
+          name: string;
+          category: BenchmarkCategory;
+          score_type: BenchmarkScoreType;
+          description: string | null;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["benchmarks"]["Row"]> & {
+          name: string;
+          category: BenchmarkCategory;
+          score_type: BenchmarkScoreType;
+        };
+        Update: Partial<Database["public"]["Tables"]["benchmarks"]["Row"]>;
+        Relationships: [];
+      };
+      personal_bests: {
+        Row: {
+          id: string;
+          user_id: string;
+          benchmark_id: string;
+          value: number;
+          rx: boolean;
+          notes: string | null;
+          recorded_date: string;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["personal_bests"]["Row"]> & {
+          user_id: string;
+          benchmark_id: string;
+          value: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["personal_bests"]["Row"]>;
+        Relationships: [
+          {
+            foreignKeyName: "personal_bests_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "personal_bests_benchmark_id_fkey";
+            columns: ["benchmark_id"];
+            isOneToOne: false;
+            referencedRelation: "benchmarks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       membership_plans: {
         Row: {
