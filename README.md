@@ -82,14 +82,19 @@ Two routes need to be hit on a schedule:
   confirmations, waitlist promotions, late cancellations, missed
   attendance) for anything logged but not yet emailed
 
-**On Vercel**: `apps/web/vercel.json` already defines the cron schedule
-(no-shows every 15 min, email dispatch every 5 min). Vercel automatically
-sends `Authorization: Bearer $CRON_SECRET` as long as `CRON_SECRET` is set
-in the project's environment variables — no extra config needed.
+**Vercel's Hobby plan caps native cron jobs at once per day**, which is too
+infrequent for timely attendance emails. `apps/web/vercel.json` still
+defines a once-daily run (03:00 UTC) as a safety net, but the real polling
+should come from a free external scheduler:
 
-**Elsewhere** (e.g. Supabase scheduled Edge Functions, or a free service
-like cron-job.org): call both URLs on the schedule above with header
-`Authorization: Bearer <your CRON_SECRET>`.
+- Sign up at [cron-job.org](https://cron-job.org) (free, no card).
+- Create two cron jobs, both hitting your deployed URL:
+  - `https://<your-app>.vercel.app/api/cron/no-shows` every 15 minutes
+  - `https://<your-app>.vercel.app/api/cron/dispatch-emails` every 5 minutes
+- On each job, add a custom header: `Authorization: Bearer <your CRON_SECRET>`.
+
+(If you later upgrade to Vercel Pro, you can restore the tighter schedule
+directly in `vercel.json` and drop the external scheduler.)
 
 ## How class programming works
 
