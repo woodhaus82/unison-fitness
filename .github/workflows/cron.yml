@@ -1,0 +1,30 @@
+name: Dispatch cron jobs
+
+# Vercel's Hobby plan only allows cron jobs to run once a day, which is too
+# slow for no-show marking and notification emails to feel real-time. This
+# hits the same two endpoints every 5 minutes instead — free, and needs no
+# new third-party account since it runs from this repo. vercel.json's daily
+# cron entries stay as a fallback in case this workflow is ever paused.
+#
+# GitHub disables scheduled workflows automatically after 60 days with no
+# pushes to the repo — re-enable from the Actions tab if that happens.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark no-shows
+        run: |
+          curl -sS --fail-with-body -w '\nHTTP %{http_code}\n' -X POST \
+            https://unison-fitness-web.vercel.app/api/cron/no-shows \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+
+      - name: Dispatch pending notification emails
+        run: |
+          curl -sS --fail-with-body -w '\nHTTP %{http_code}\n' -X POST \
+            https://unison-fitness-web.vercel.app/api/cron/dispatch-emails \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
